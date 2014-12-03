@@ -4,32 +4,33 @@
 			//global array for accumulated inventory (it is empty as you start playing...)
 			var inventory = new Array();
 			// global array for location instances
-            var locArray = [Loc0_mansion_hall,
-							Loc1_dark_room,
-							Loc2_living_room,			
-							Loc3_piano_room,
-							Loc4_kitchen,
-							Loc5_dining,
-							Loc6_small_corridor,
-							Loc7_bedroom,
-							Loc8_large_hallway,
-							Loc9_stairs,
-							Loc10_library];
-				
+            var locArray = new Array();
+			    locArray[0] = Loc0_mansion_hall,
+				locArray[1] = Loc1_dark_room,
+				locArray[2] = Loc2_living_room,			
+				locArray[3] = Loc3_piano_room,
+				locArray[4] = Loc4_kitchen,
+				locArray[5] = Loc5_dining,
+				locArray[6] = Loc6_small_corridor,
+				locArray[7] = Loc7_bedroom,
+				locArray[8] = Loc8_large_hallway,
+				locArray[9] = Loc9_stairs,
+				locArray[10] = Loc10_library
+			
 		    //global array for navigation 
-			var navigation = new Array(    /*N   S   E   W*/ 
-			                        /*0*/  [ 1,  3,  4,  2]  
-									/*1*/  [-1,  0,  6, -1] 
-								    /*2*/  [-1, -1,  0, -1] 
- 									/*3*/  [ 0, -1, -1, -1] 
- 								    /*4*/  [ 5, -1, 10,  0] 
-								    /*5*/  [ 6,  4,  8, -1] 
-								    /*6*/  [-1,  5,  7,  1] 
-						            /*7*/  [-1,  8, -1,  6] 
-							        /*8*/  [ 7, 10,  9,  5] 
-								    /*9*/  [-1, -1, -1,  8] 
-								   /*10*/  [ 8, -1, -1,  4] 
-		                    )		 
+			var nav = [          /*N   S   E   W*/ 
+			              /*0*/  [ 1,  3,  4,  2],  
+						  /*1*/  [-1,  0,  6, -1], 
+						  /*2*/  [-1, -1,  0, -1], 
+ 						  /*3*/  [ 0, -1, -1, -1], 
+ 						  /*4*/  [ 5, -1, 10,  0], 
+					      /*5*/  [ 6,  4,  8, -1], 
+			    		  /*6*/  [-1,  5,  7,  1],
+						  /*7*/  [-1,  8, -1,  6],
+					      /*8*/  [ 7, 10,  9,  5],
+					      /*9*/  [-1, -1, -1,  8],
+						 /*10*/  [ 8, -1, -1,  4] 
+		                    ];		 
 		
 			// global array for items and inventory
 			var items = new Array();
@@ -37,6 +38,12 @@
 			    items[4] = itemFlashlight;
 			    items[6] = itemMusicSheet;
 				items[8] = itemBook;
+				
+			 var NORTH = 0;
+			 var SOUTH = 1;
+			 var EAST  = 2;
+			 var WEST  = 3
+					
             //global variables for score
      		var hasVisitedRoom0 = false;
 		    var hasVisitedRoom1 = false;
@@ -48,17 +55,7 @@
 			var hasVisitedRoom7 = false;
 			var hasVisitedRoom8 = false;
 			var hasVisitedRoom9 = false;
-			var hasVisitedRoom10 = false;
-			
-		   //initial function
-		   function init() {
-			    updateDisplay(Loc0_mansion_hall);
-				buttonVisibility();			
-			    document.getElementById("picture").style.visibility = "hidden";
-				takeButtonVisibility();
-				document.getElementById("mainText").readOnly = true;
-				document.getElementById("scoreText").readOnly = true;
-			}	
+			var hasVisitedRoom10 = false;		  
 		   
 			// Location prototype	
 		    function locale() {
@@ -66,94 +63,15 @@
 		     this.name = "";
 			 this.message = "";
 			 this.hasItem = "";
-			 this.item = function () {
-			 
+			 this.item = function () {			 
 			 }
 			 this.toString = function() {
 				     var text = "";
 					 text = this.message + " " + this.item;
 					 return text;
-				 }			 
-			 }
-		
-			  //Inventory prototype
-			function Item() {
-			  this.id = "";
-			  this.name = "";
-			  this.message = "";
-			  this.isTaken = "";
-			  }
-			  //inventory instances
-                var itemMap = new Item();
-				itemMap.curLoc = 3;
-				itemMap.name = "Map";
-				itemMap.message = "There is a map on the table.";
-			    itemMap.isTaken = false;
-
-				var itemFlashlight = new Item();
-				itemFlashlight.curLoc = 4;
-				itemFlashlight.name = "Flashlight";
-				itemFlashlight.message = "There is a flashlight.";
-				itemFlashlight.isTaken = false;
-
-				var itemMusicSheet = new Item();
-				itemMusicSheet.curLoc = 6;
-				itemMusicSheet.name = "Music Sheet";
-				itemMusicSheet.message = "There is a music sheet on the floor.";
-				itemMusicSheet.isTaken = false;
-				
-				var itemBook = new Item();
-				itemBook.curLoc = 8;
-				itemBook.name = "Book";
-				itemBook.message = "Wow, there is a book in front of you!";
-				itemBook.isTaken = false;
-								
-			function btn_take() {
-				if (curLoc === 3 && !itemMap.isTaken) {
-				    itemMap.isTaken = true;
-					Loc3_piano_room.item = "";
-					inventory.push(itemMap.name);
-					document.getElementById("picture").style.visibility = "visible";					
-					message = "You have taken the " + itemMap.name + "!";
-                    checkScore();
-		            dspScore();	
-                    document.getElementById("takeButton").disabled = true;					
-				 } else {			 
-			        if (curLoc === 4 && !itemFlashlight.isTaken) {
-					    itemFlashlight.isTaken = true;
-						Loc4_kitchen.item = "";
-						inventory.push(itemFlashlight.name);
-					    message = "You have taken a " + itemFlashlight.name + "!";	
-                        checkScore();
-		                dspScore();	
-                        document.getElementById("takeButton").disabled = true;	
-                      } else {
-                          if (curLoc === 6 && !itemMusicSheet.isTaken) {
-						      itemMusicSheet.isTaken = true;
-							  Loc6_small_corridor.item = "";		
-                              inventory.push(itemMusicSheet.name);							  
-					          message = "You have taken " + itemMusicSheet.name + "!";
-                              checkScore();							  
-		                      dspScore();	
-                              document.getElementById("takeButton").disabled = true;
-                            } else {
-                                if (curLoc === 8 && !itemBook.isTaken) {
-									itemBook.isTaken = true;
-									Loc8_large_hallway.item = "";		
-									inventory.push(itemBook.name);							  
-									message = "You have taken " + itemBook.name + "!";
-									checkScore();							  
-									dspScore();									
-									document.getElementById("takeButton").disabled = true;							  
-			                    } else {
-					                  message = "There is nothing to take in this room.";
-						            } 
-					          }
-			             }
-				    }
-			  presentMessage(message);
-			}								
-			// Location Instances			
+				 }	
+			}
+            // Location Instances 			
 			var Loc0_mansion_hall = new locale();
 			Loc0_mansion_hall.id = 0;
 			Loc0_mansion_hall.name = "mansion's hall";
@@ -245,160 +163,134 @@
 			                        "and large windows. There is an enormous amount" + 
 								    "of books here.";
 			Loc10_library.item = "";
-			Loc10_library.hasItem = false;
+			Loc10_library.hasItem = false;				 
+			
+		
+			  //Inventory prototype
+			function Item() {
+			  this.id = "";
+			  this.name = "";
+			  this.message = "";
+			  this.isTaken = "";
+			}			
+			  //inventory instances 
+                var itemMap = new Item();
+				itemMap.curLoc = 3;
+				itemMap.name = "Map";
+				itemMap.message = "There is a map on the table.";
+			    itemMap.isTaken = false;
+
+				var itemFlashlight = new Item();
+				itemFlashlight.curLoc = 4;
+				itemFlashlight.name = "Flashlight";
+				itemFlashlight.message = "There is a flashlight.";
+				itemFlashlight.isTaken = false;
+
+				var itemMusicSheet = new Item();
+				itemMusicSheet.curLoc = 6;
+				itemMusicSheet.name = "Music Sheet";
+				itemMusicSheet.message = "There is a music sheet on the floor.";
+				itemMusicSheet.isTaken = false;
+				
+				var itemBook = new Item();
+				itemBook.curLoc = 8;
+				itemBook.name = "Book";
+				itemBook.message = "Wow, there is a book in front of you!";
+				itemBook.isTaken = false;
+				
+				
+             //initial function
+		   function init() {
+			    updateDisplay(Loc0_mansion_hall);
+				buttonVisibility();			
+			    document.getElementById("picture").style.visibility = "hidden";
+				takeButtonVisibility();
+				document.getElementById("mainText").readOnly = true;
+				document.getElementById("scoreText").readOnly = true;
+			}			
+				
+			function btn_take() {
+				if (curLoc === 3 && !itemMap.isTaken) {
+				    itemMap.isTaken = true;
+					Loc3_piano_room.item = "";
+					inventory.push(itemMap.name);
+					document.getElementById("picture").style.visibility = "visible";					
+					message = "You have taken the " + itemMap.name + "!";
+                    checkScore();
+		            dspScore();	
+                    document.getElementById("takeButton").disabled = true;					
+				 } else {			 
+			        if (curLoc === 4 && !itemFlashlight.isTaken) {
+					    itemFlashlight.isTaken = true;
+						Loc4_kitchen.item = "";
+						inventory.push(itemFlashlight.name);
+					    message = "You have taken a " + itemFlashlight.name + "!";	
+                        checkScore();
+		                dspScore();	
+                        document.getElementById("takeButton").disabled = true;	
+                      } else {
+                          if (curLoc === 6 && !itemMusicSheet.isTaken) {
+						      itemMusicSheet.isTaken = true;
+							  Loc6_small_corridor.item = "";		
+                              inventory.push(itemMusicSheet.name);							  
+					          message = "You have taken " + itemMusicSheet.name + "!";
+                              checkScore();							  
+		                      dspScore();	
+                              document.getElementById("takeButton").disabled = true;
+                            } else {
+                                if (curLoc === 8 && !itemBook.isTaken) {
+									itemBook.isTaken = true;
+									Loc8_large_hallway.item = "";		
+									inventory.push(itemBook.name);							  
+									message = "You have taken " + itemBook.name + "!";
+									checkScore();							  
+									dspScore();									
+									document.getElementById("takeButton").disabled = true;							  
+			                    } else {
+					                  message = "There is nothing to take in this room.";
+						            } 
+					          }
+			             }
+				    }
+			  presentMessage(message);
+			}								
+			
 			
            //navigation functions
+            function nextLoc(dir) {
+			 var dir = -1;
+			 var newLoc = nav [curLoc][dir];
+			     if (newLoc >= 0) {
+				    curLoc = newLoc;
+				} else {
+				    presentMessage("You cannot go that way!");
+					}
+			}
+		   
 		    function btn_go_North() {
-		    if (curLoc === 3) {
-			    curLoc = 0;               
-                updateDisplay(Loc0_mansion_hall);			
-			   } else {
-			       if (curLoc === 0) {
-				       curLoc = 1;	
-                       updateDisplay(Loc1_dark_room);					   
-			        } else {
-					    if (curLoc === 4) {
-				            curLoc = 5;	
-                             updateDisplay(Loc5_dining);
-						 } else {
-							  if (curLoc === 5) {
-				                  curLoc = 6;	
-                                  updateDisplay(Loc6_small_corridor);
-							    } else {
-					                if (curLoc === 8) {
-				                        curLoc = 7;	
-                                        updateDisplay(Loc7_bedroom);
-						              } else {
-							               if (curLoc === 10) {
-				                               curLoc = 8;	
-                                               updateDisplay(Loc8_large_hallway);
-							                 } else {
-					                             navigationError();
-											}
-										}
-									}
-					             }		
-					        }
-					  }
-					buttonVisibility();
-			     } 
-
-		    function btn_go_South() {
-			    if (curLoc === 1) {
-			        curLoc = 0;	
-                    updateDisplay(Loc0_mansion_hall);
-			     } else {
-			          if (curLoc === 0) {
-				          curLoc = 3;
-                          updateDisplay(Loc3_piano_room);				  
-				     } else {
-					     if (curLoc === 6) {
-				             curLoc = 5;	
-                             updateDisplay(Loc5_dining);
-						 } else {
-							  if (curLoc === 5) {
-				                  curLoc = 4;	
-                                  updateDisplay(Loc4_kitchen);
-							    } else {
-					                if (curLoc === 7) {
-				                        curLoc = 8;	
-                                        updateDisplay(Loc8_large_hallway);
-						              } else {
-							               if (curLoc === 8) {
-				                               curLoc = 10;	
-                                               updateDisplay(Loc10_library);
-							                  } else {
-					                             navigationError();
-											}
-										}
-									}
-					             }		
-					        }
-					    }	
-                     buttonVisibility();						
-		           }
-		    
-		    function btn_go_West() {
-		      if (curLoc === 4) {
-                  curLoc = 0;  
-                  updateDisplay(Loc0_mansion_hall);		  
-			      } else {
-			           if (curLoc === 0) {
-				           curLoc = 2;	
-                           updateDisplay(Loc2_living_room);					   
-				        } else {
-						    if (curLoc === 7) {
-				                curLoc = 6;	
-                                updateDisplay(Loc6_small_corridor);
-						    } else {
-							    if (curLoc === 6) {
-				                    curLoc = 1;	
-                                    updateDisplay(Loc1_dark_room);
-							     } else {
-							          if (curLoc === 8) {
-				                          curLoc = 5;	
-                                          updateDisplay(Loc5_dining);
-							           } else {
-					                        if (curLoc === 10) {
-				                                curLoc = 4;	
-                                                updateDisplay(Loc4_kitchen);
-						                     } else {
-							                      if (curLoc === 9) {
-				                                      curLoc = 8;	
-                                                      updateDisplay(Loc8_large_hallway);
-							                       } else {
-					                                     navigationError();
-													}
-												}
-										    }
-									  }
-								 }
-						   }
-					            		
-				    }
-                  buttonVisibility();					
-		      }			 
-			         
-		    function btn_go_East(){
-		     if (curLoc === 2) {
-			     curLoc = 0;
-                 updateDisplay(Loc0_mansion_hall);				 
-			     } else {
-			          if (curLoc === 0) {
-			              curLoc = 4;
-                          updateDisplay(Loc4_kitchen);		          
-			            } else {
-						      if (curLoc === 1) {
-				                  curLoc = 6;	
-                                  updateDisplay(Loc6_small_corridor);
-							  } else {
-							       if (curLoc === 6) {
-				                       curLoc = 7;	
-                                       updateDisplay(Loc7_bedroom);
-									} else {
-							            if (curLoc === 5) {
-				                            curLoc = 8;	
-                                            updateDisplay(Loc8_large_hallway);
-									    } else {
-							                if (curLoc === 4) {
-				                                curLoc = 10;	
-                                                updateDisplay(Loc10_library);
-									         } else {
-							                     if (curLoc === 8) {
-				                                     curLoc = 9;	
-                                                     updateDisplay(Loc9_stairs);
-									              } else {
-					                                  navigationError();
-												}
-											}
-										}
-								   }
-					          }					  
-					     }
-		            }
-                  buttonVisibility();					
-		        }
-
+			    nextLoc(NORTH);
+				locale();
+				checkScore();
+			}
+			
+			function btn_go_South() {
+			    nextLoc(SOUTH);
+				locale();
+				checkScore();
+			}
+			
+			function btn_go_East() {
+			    nextLoc(EAST);
+				locale();
+				checkScore();
+			}
+			
+			function btn_go_West() {
+			    nextLoc(WEST);
+				locale();
+				checkScore();
+			}
+			
             function txtCommand_keypress(e) {
 				 if (e.which === 13) {
 				     document.getElementById("go").onclick();
@@ -437,15 +329,14 @@
 		             dspScore();
 			}
 		  		 		  		  		  
-		    function navigationError() {		          
+		    /*function navigationError() {		          
 			  presentMessage("You cannot go that way.");		     		 		        
 		   }
-		   
+		   */
 		    function unknownCommand() {
 		      presentMessage("I don't understand your command.");
 		   }
-	   		
-		   
+	   				   
 		    function showInventory() {	      
 			   message = "Your inventory includes:" + " " + inventory + " ";
 			   presentMessage(message);			  
@@ -641,4 +532,3 @@ function buttonVisibility() {
 		  function dspScore() {			         
 			     document.getElementById("scoreText").value = "Score:" + score;
 		 }
-
