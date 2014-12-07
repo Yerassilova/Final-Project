@@ -32,7 +32,7 @@
                 var itemMap = new Item();
 				itemMap.curLoc = 3;
 				itemMap.name = "Map";
-				itemMap.description = "There is a map on the table.";
+				itemMap.description = "There is a map on the piano.";
 			    itemMap.isTaken = false;
 
 				var itemFlashlight = new Item();
@@ -202,6 +202,7 @@
              //initial function
 		   function init() {
 			    presentMessage(Loc0_mansion_hall);
+				
 				buttonVisibility();			
 			    document.getElementById("picture").style.visibility = "hidden";
 				takeButtonVisibility();
@@ -316,7 +317,7 @@
 							             if (txtCommand.value === "take" || txtCommand.value === "t") {
 							                 btn_take();
 							             } else {
-							                 unknownCommand();
+	   					                     unknownCommand();
 											}
 										}
 						             }
@@ -376,79 +377,99 @@
 						}
 			}
 			
+			// puzzle elements
+        function btn_Play() {
+		    presentMessage("Wow, you are playing music! Do you hear the bird singing? It is somewhere close!");
+		}
+	  
+	   function btn_Play_visibility() {		
+		   if (curLoc === 3) {
+		       document.getElementById("play").disabled = false;
+		   } else {
+		        document.getElementById("play").disabled = true;
+		   }
+		}
+			
            function buttonVisibility() {
+		    btn_Play_visibility();
 		     switch(curLoc) {
 			    case 0: document.getElementById("northBtn").disabled = false;
 			            document.getElementById("southBtn").disabled = false;
 			            document.getElementById("westBtn").disabled = false;
 			            document.getElementById("eastBtn").disabled = false;
-				        takeButtonVisibility();
+						
                         break;						
 				case 1: document.getElementById("northBtn").disabled = true;
 				        document.getElementById("westBtn").disabled = true;
-                        takeButtonVisibility();						
+						
 						break;
 				case 2: document.getElementById("northBtn").disabled = true;
 			            document.getElementById("southBtn").disabled = true;
 			            document.getElementById("westBtn").disabled = true;
 						document.getElementById("eastBtn").disabled = false;
-						takeButtonVisibility();
+						
 						break;
 				case 3: document.getElementById("southBtn").disabled = true;
 			            document.getElementById("westBtn").disabled = true;
 			            document.getElementById("eastBtn").disabled = true;
 						document.getElementById("northBtn").disabled = false;
-						takeButtonVisibility();
+                        				
 						break;
 				case 4: document.getElementById("southBtn").disabled = true;
 				        document.getElementById("eastBtn").disabled = false;
 						document.getElementById("westBtn").disabled = false;
 						document.getElementById("northBtn").disabled = false;
-						takeButtonVisibility();
+						
 						break;
 				case 5: document.getElementById("westBtn").disabled = true;
 			            document.getElementById("eastBtn").disabled = false;
 						document.getElementById("northBtn").disabled = false;
 			            document.getElementById("southBtn").disabled = false;
-						takeButtonVisibility();
+						
 						break;
 				case 6: document.getElementById("northBtn").disabled = true;
 				        document.getElementById("southBtn").disabled = false;
 			            document.getElementById("westBtn").disabled = false;
 			            document.getElementById("eastBtn").disabled = false;
-                        takeButtonVisibility();						
+						
 				        break;
 				case 7: document.getElementById("northBtn").disabled = true;
 			            document.getElementById("southBtn").disabled = false;
 						document.getElementById("eastBtn").disabled = true;
 						document.getElementById("westBtn").disabled = false;
-						takeButtonVisibility();
+						
 						break;
 				case 8: document.getElementById("northBtn").disabled = false;
 			            document.getElementById("southBtn").disabled = false;
 						document.getElementById("eastBtn").disabled = false;
 						document.getElementById("westBtn").disabled = false;
-						takeButtonVisibility();
+						
 						break;
 				case 9: document.getElementById("northBtn").disabled = true;
 			            document.getElementById("southBtn").disabled = true;
 						document.getElementById("eastBtn").disabled = true;
 						document.getElementById("westBtn").disabled = false;
-						takeButtonVisibility();
+						
 						break;
 			   case 10: document.getElementById("northBtn").disabled = false;
 			            document.getElementById("southBtn").disabled = true;
 						document.getElementById("eastBtn").disabled = true;
 						document.getElementById("westBtn").disabled = false;
-						takeButtonVisibility();
+						
 						break;
 			   default: document.getElementById("northBtn").disabled = false;
 			            document.getElementById("southBtn").disabled = false;
 			            document.getElementById("westBtn").disabled = false;
 			            document.getElementById("eastBtn").disabled = false; 
 						document.getElementById("takeButton").disabled = true;
-		     }
-		   }		
+						
+					
+				}
+				
+		   }	
+
+		   
+		   
 		  // functions for keeping and showing score!
 		   function checkScore() {
 		     if (curLoc === 0) {
@@ -519,6 +540,11 @@
 			 }	 
 			 
 		 }     			
-		  function dspScore() {			         
+		function dspScore() {			         
 			     document.getElementById("scoreText").value = "Score:" + score;
-		 }
+		}
+
+		
+		
+		
+		
