@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<!--Liliya Yerassilova
+    Introduction to Programming
+	Project 4 - Game v-0.6-->
+	
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+        <meta name="keywords"           content="game, version 0.2"/>
+        <meta name="author"             content="Liliya Yerassilova"/> 
+        <title>Game</title>
+	  
+	    <script type="text/javascript" src="JavaScriptcode.js"></script>	 
+        <style>
+	       div {position: absolute;
+		        top: 140px;
+			    left: 465px;
+			    }
+	    </style>     	  
+        </head>
+        <body onload="init();">
+           <h1>
+	          Inside a Mansion
+	       </h1>
+	       <br>
+	           If you want to write to me:
+                     <a href="mailto:liliya-er@mail.ru?Subject=My%20message">
+                        Click here</a>
+	       <br><br>
+	       <textarea rows="15" cols="50" id="mainText"></textarea>
+		   
+          <div id="scorebox">
+                <textarea rows="5" cols="8" id="scoreText"></textarea>	
+	      </div>
+	      <br><br>
+	      Your Command:
+	           <input type="text"
+		              id="txtCommand"
+			          name="txtCommand"
+					  onkeypress = "txtCommand_keypress(event);"/>
+
+	           <input type="button"
+			          id="go"
+		              value="Go"
+			          onclick="btnGo_click();"/>
+			   
+		       <br><br>
+	           <input type="button"
+	                  value="North"
+			          id="northBtn"
+		              onclick="btn_go_North();" />
+
+               <input type="button"
+	                  value="South"
+			          id="southBtn"
+		              onclick="btn_go_South();" />
+
+               <input type="button"
+	                  value="West"
+			          id="westBtn"
+		              onclick="btn_go_West();" />
+
+               <input type="button"
+	                  value="East"
+			          id="eastBtn"
+		              onclick="btn_go_East();" />
+					  
+			   <input type="button"
+			          value="Take"
+					  id="takeButton"
+					  onclick="btn_take();"/>
+					  
+			   <input type="button"
+			          value="My Inventory"
+					  id="myInventory"
+					  onclick="showInventory();"/>
+					  
+				<input type="button"
+	                   value="Help"
+			           id="help"
+		               onclick="btn_Help();" />
+					   
+				<input type="button"
+	                   value="Play"
+			           id="play"
+		               onclick="btn_Play();" />
+					   
+				
+					  
+					  
+			<p id="Map"><strong>Map</strong></p>
+			
+			<img  src = f2720cf0-6ab6-11e4-8463-2f73e749306c.png  id="picture" width-"800" height="500" alt="Map"/>
+			
+			  
+	 
+ 
+      </body>  
+</html>
