@@ -25,32 +25,32 @@
 			function Item() {
 			  this.id = "";
 			  this.name = "";
-			  this.message = "";
+			  this.description = "";
 			  this.isTaken = "";
 			}			
 			  //inventory instances 
                 var itemMap = new Item();
 				itemMap.curLoc = 3;
 				itemMap.name = "Map";
-				itemMap.message = "There is a map on the table.";
+				itemMap.description = "There is a map on the table.";
 			    itemMap.isTaken = false;
 
 				var itemFlashlight = new Item();
 				itemFlashlight.curLoc = 4;
 				itemFlashlight.name = "Flashlight";
-				itemFlashlight.message = "There is a flashlight.";
+				itemFlashlight.description = "There is a flashlight.";
 				itemFlashlight.isTaken = false;
 
 				var itemMusicSheet = new Item();
 				itemMusicSheet.curLoc = 6;
 				itemMusicSheet.name = "Music Sheet";
-				itemMusicSheet.message = "There is a music sheet on the floor.";
+				itemMusicSheet.description = "There is a music sheet on the floor.";
 				itemMusicSheet.isTaken = false;
 				
 				var itemBook = new Item();
 				itemBook.curLoc = 8;
 				itemBook.name = "Book";
-				itemBook.message = "Wow, there is a book in front of you!";
+				itemBook.description = "Wow, there is a book in front of you!";
 				itemBook.isTaken = false;		   
 		   
 		    
@@ -60,7 +60,6 @@
 			    items[4] = itemFlashlight;
 			    items[6] = itemMusicSheet;
 				items[8] = itemBook;
-		   
 			
 		    //global array for accumulated inventory (it is empty as you start playing...)
 			var inventory = new Array();
@@ -72,15 +71,14 @@
 			 this.message = "";
 			 this.hasVisited = false;
 			 this.hasItem = "";
-			 this.item = function () {			 
-		    }
+			 this.item = "";
 			 this.toString = function() {
 				     var text = "";
 					 text = this.message + " " + this.item;
 					 return text;
 				    }	
 			}
-            // Location Instances within function locale()			
+            // Location Instances 		
 			var Loc0_mansion_hall = new locale();
 			Loc0_mansion_hall.id = 0;
 			Loc0_mansion_hall.name = "mansion's hall";
@@ -118,14 +116,14 @@
 			                          " middle of the room and nothing else.";
 			Loc3_piano_room.hasVisited = false;
 			Loc3_piano_room.hasItem = true;
-			Loc3_piano_room.item = itemMap.message;
+			Loc3_piano_room.item = itemMap.description;
 			
 			var Loc4_kitchen = new locale();
 			Loc4_kitchen.id = 4;
 			Loc4_kitchen.name = "kitchen";
 			Loc4_kitchen.message = "You have entered a kitchen.";
 			Loc4_kitchen.hasVisited = false;
-			Loc4_kitchen.item = itemFlashlight.message;
+			Loc4_kitchen.item = itemFlashlight.description;
 			Loc4_kitchen.hasItem = true;
 			
 			var Loc5_dining = new locale();
@@ -143,7 +141,7 @@
 			Loc6_small_corridor.message = "You entered a small and narrow corridor. You can" + 
 			                              " see pictures of previous owners of the mansion";
             Loc6_small_corridor.hasVisited = false;										  
-			Loc6_small_corridor.item = itemMusicSheet.message;
+			Loc6_small_corridor.item = itemMusicSheet.description;
 			Loc6_small_corridor.hasItem = true;
 			
 			var Loc7_bedroom = new locale();
@@ -162,7 +160,7 @@
 			                             "can see different pictures of previous" + 
 									     "owners of the mansion.";
 			Loc8_large_hallway.hasVisited = false;
-			Loc8_large_hallway.item = itemBook.message;
+			Loc8_large_hallway.item = itemBook.description;
 			Loc8_large_hallway.hasItem = true;
 			
 			var Loc9_stairs = new locale();
@@ -203,7 +201,7 @@
 				
              //initial function
 		   function init() {
-			    updateDisplay(Loc0_mansion_hall);
+			    presentMessage(Loc0_mansion_hall);
 				buttonVisibility();			
 			    document.getElementById("picture").style.visibility = "hidden";
 				takeButtonVisibility();
@@ -226,7 +224,7 @@
 					    itemFlashlight.isTaken = true;
 						Loc4_kitchen.item = "";
 						inventory.push(itemFlashlight.name);
-					    message = "You have taken a " + itemFlashlight.name + "!";	
+					    message = "You have taken the " + itemFlashlight.name + "!";	
                         checkScore();
 		                dspScore();	
                         document.getElementById("takeButton").disabled = true;	
@@ -235,7 +233,7 @@
 						      itemMusicSheet.isTaken = true;
 							  Loc6_small_corridor.item = "";		
                               inventory.push(itemMusicSheet.name);							  
-					          message = "You have taken " + itemMusicSheet.name + "!";
+					          message = "You have taken the " + itemMusicSheet.name + "!";
                               checkScore();							  
 		                      dspScore();	
                               document.getElementById("takeButton").disabled = true;
@@ -244,7 +242,7 @@
 									itemBook.isTaken = true;
 									Loc8_large_hallway.item = "";		
 									inventory.push(itemBook.name);							  
-									message = "You have taken " + itemBook.name + "!";
+									message = "You have taken the " + itemBook.name + "!";
 									checkScore();							  
 									dspScore();									
 									document.getElementById("takeButton").disabled = true;							  
@@ -260,26 +258,30 @@
 			//navigation functions		   
 		    function btn_go_North() {
 			    nextLoc(NORTH);
-				updateDisplay(locArray[curLoc].message);				
+				presentMessage(locArray[curLoc].message);				
 				checkScore();
+				takeButtonVisibility();
 			}
 			
 			function btn_go_South() {
 			    nextLoc(SOUTH);
-				updateDisplay(locArray[curLoc].message);
+				presentMessage(locArray[curLoc].message);
 				checkScore();
+				takeButtonVisibility();
 			}
 			
 			function btn_go_East() {
 			    nextLoc(EAST);
-				updateDisplay(locArray[curLoc].message);
+				presentMessage(locArray[curLoc].message);
 				checkScore();
+				takeButtonVisibility();
 			}
 			
 			function btn_go_West() {
 			    nextLoc(WEST);
-				updateDisplay(locArray[curLoc].message);
+				presentMessage(locArray[curLoc].message);
 				checkScore();
+				takeButtonVisibility();
 			}
 			
              function nextLoc(dir) {
@@ -322,12 +324,6 @@
 			               }
 		            }
 		  
-		    function updateDisplay(msg) {
-					 var userCommand = document.getElementById("mainText");
-					 userCommand.value = msg + "\n\n" + userCommand.value;
-			         checkScore();
-		             dspScore();
-			}
 
 		    function unknownCommand() {
 		      presentMessage("I don't understand your command.");
@@ -349,8 +345,14 @@
 		   
 		  //utility functions
 		   function presentMessage(message) {
-			   var target = document.getElementById("mainText");
-               target.value = message + "\n\n" + target.value;
+		    var target = document.getElementById("mainText");
+		    if (this.hasItem = true) {
+			        target.value = message + " " + locArray[curLoc].item + "\n\n" + target.value;
+			    } else {			   
+                    target.value = message + "\n\n" + target.value;
+				 }			
+			   checkScore();
+		       dspScore();
             }	
 									
 			function takeButtonVisibility() {
@@ -373,23 +375,24 @@
 						        }
 						}
 			}
-function buttonVisibility() {
+			
+           function buttonVisibility() {
 		     switch(curLoc) {
 			    case 0: document.getElementById("northBtn").disabled = false;
 			            document.getElementById("southBtn").disabled = false;
 			            document.getElementById("westBtn").disabled = false;
 			            document.getElementById("eastBtn").disabled = false;
-				        document.getElementById("takeButton").disabled = true;
+				        takeButtonVisibility();
                         break;						
 				case 1: document.getElementById("northBtn").disabled = true;
 				        document.getElementById("westBtn").disabled = true;
-                        document.getElementById("takeButton").disabled = true;						
+                        takeButtonVisibility();						
 						break;
 				case 2: document.getElementById("northBtn").disabled = true;
 			            document.getElementById("southBtn").disabled = true;
 			            document.getElementById("westBtn").disabled = true;
 						document.getElementById("eastBtn").disabled = false;
-						document.getElementById("takeButton").disabled = true;
+						takeButtonVisibility();
 						break;
 				case 3: document.getElementById("southBtn").disabled = true;
 			            document.getElementById("westBtn").disabled = true;
@@ -407,7 +410,7 @@ function buttonVisibility() {
 			            document.getElementById("eastBtn").disabled = false;
 						document.getElementById("northBtn").disabled = false;
 			            document.getElementById("southBtn").disabled = false;
-						document.getElementById("takeButton").disabled = true;
+						takeButtonVisibility();
 						break;
 				case 6: document.getElementById("northBtn").disabled = true;
 				        document.getElementById("southBtn").disabled = false;
@@ -419,7 +422,7 @@ function buttonVisibility() {
 			            document.getElementById("southBtn").disabled = false;
 						document.getElementById("eastBtn").disabled = true;
 						document.getElementById("westBtn").disabled = false;
-						document.getElementById("takeButton").disabled = true;
+						takeButtonVisibility();
 						break;
 				case 8: document.getElementById("northBtn").disabled = false;
 			            document.getElementById("southBtn").disabled = false;
@@ -431,13 +434,13 @@ function buttonVisibility() {
 			            document.getElementById("southBtn").disabled = true;
 						document.getElementById("eastBtn").disabled = true;
 						document.getElementById("westBtn").disabled = false;
-						document.getElementById("takeButton").disabled = true;
+						takeButtonVisibility();
 						break;
 			   case 10: document.getElementById("northBtn").disabled = false;
 			            document.getElementById("southBtn").disabled = true;
 						document.getElementById("eastBtn").disabled = true;
 						document.getElementById("westBtn").disabled = false;
-						document.getElementById("takeButton").disabled = true;
+						takeButtonVisibility();
 						break;
 			   default: document.getElementById("northBtn").disabled = false;
 			            document.getElementById("southBtn").disabled = false;
@@ -514,15 +517,6 @@ function buttonVisibility() {
 				    Loc10_library.hasVisited = true;				 
 			     }
 			 }	 
-			 if (curLoc === 3 && inventory.indexOf("map") >= 0) {
-			     score = score + 5;
-			 }			 
-			 if (curLoc === 4 && inventory.indexOf("flashlight") >= 0) {
-			     score = score + 5;
-				}			
-			if (curLoc === 6 && inventory.indexOf("Music") >= 0) {
-			     score = score + 5;
-				}
 			 
 		 }     			
 		  function dspScore() {			         
