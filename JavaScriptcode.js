@@ -1,172 +1,27 @@
             // global variables and arrays
 			var curLoc = 0;		
 			var score = 0;
-			//global array for accumulated inventory (it is empty as you start playing...)
-			var inventory = new Array();
-			// global array for location instances
-            var locArray = new Array();
-			    locArray[0] = Loc0_mansion_hall,
-				locArray[1] = Loc1_dark_room,
-				locArray[2] = Loc2_living_room,			
-				locArray[3] = Loc3_piano_room,
-				locArray[4] = Loc4_kitchen,
-				locArray[5] = Loc5_dining,
-				locArray[6] = Loc6_small_corridor,
-				locArray[7] = Loc7_bedroom,
-				locArray[8] = Loc8_large_hallway,
-				locArray[9] = Loc9_stairs,
-				locArray[10] = Loc10_library
+			var NORTH = 0;
+			var SOUTH = 1;
+			var EAST  = 2;
+			var WEST  = 3					
 			
 		    //global array for navigation 
-			var nav = [          /*N   S   E   W*/ 
-			              /*0*/  [ 1,  3,  4,  2],  
-						  /*1*/  [-1,  0,  6, -1], 
-						  /*2*/  [-1, -1,  0, -1], 
- 						  /*3*/  [ 0, -1, -1, -1], 
- 						  /*4*/  [ 5, -1, 10,  0], 
-					      /*5*/  [ 6,  4,  8, -1], 
-			    		  /*6*/  [-1,  5,  7,  1],
-						  /*7*/  [-1,  8, -1,  6],
-					      /*8*/  [ 7, 10,  9,  5],
-					      /*9*/  [-1, -1, -1,  8],
-						 /*10*/  [ 8, -1, -1,  4] 
-		                    ];		 
-		
-			// global array for items and inventory
-			var items = new Array();
-			    items[3] = itemMap;
-			    items[4] = itemFlashlight;
-			    items[6] = itemMusicSheet;
-				items[8] = itemBook;
-				
-			 var NORTH = 0;
-			 var SOUTH = 1;
-			 var EAST  = 2;
-			 var WEST  = 3
-					
-            //global variables for score
-     		var hasVisitedRoom0 = false;
-		    var hasVisitedRoom1 = false;
-		    var hasVisitedRoom2 = false;
-		    var hasVisitedRoom3 = false;
-		    var hasVisitedRoom4 = false;
-			var hasVisitedRoom5 = false;
-			var hasVisitedRoom6 = false;
-			var hasVisitedRoom7 = false;
-			var hasVisitedRoom8 = false;
-			var hasVisitedRoom9 = false;
-			var hasVisitedRoom10 = false;		  
-		   
-			// Location prototype	
-		    function locale() {
-			 this.id = "";
-		     this.name = "";
-			 this.message = "";
-			 this.hasItem = "";
-			 this.item = function () {			 
-			 }
-			 this.toString = function() {
-				     var text = "";
-					 text = this.message + " " + this.item;
-					 return text;
-				 }	
-			}
-            // Location Instances 			
-			var Loc0_mansion_hall = new locale();
-			Loc0_mansion_hall.id = 0;
-			Loc0_mansion_hall.name = "mansion's hall";
-			Loc0_mansion_hall.message = "You are standing inside a mansion's hall. In the mansion" + 
-			                            " there is a canary in a cage covered with black cloth, so" + 
-									    " that it does not sing and you cannot hear it. Your aim is" + 
-										" to find the bird and release it. If it sings when flies" + 
-										" away, you will become the happiest person.";;
-			Loc0_mansion_hall.item = "";
-			Loc0_mansion_hall.hasItem = false;
-						
-		    var Loc1_dark_room = new locale();
-		    Loc1_dark_room.id = 1;
-			Loc1_dark_room.name = "dark room";
-			Loc1_dark_room.message = "You entered a dark room with no windows, so you cannot see"+ 
-			                         " anything...";
-			Loc1_dark_room.item = "";
-			Loc1_dark_room.hasItem = false;
-		
-			var Loc2_living_room = new locale();
-			Loc2_living_room.id = 2;
-			Loc2_living_room.name = "living room";
-			Loc2_living_room.message = "You entered a living room, there is a table and an armchair"+ 
-			                           " in front of a chimney."; 
-			Loc2_living_room.item = "";
-			Loc2_living_room.hasItem = false;
+			var nav = [ /*N   S   E   W*/ 
+			     /*0*/  [ 1,  3,  4,  2],  
+			     /*1*/  [-1,  0,  6, -1], 
+				 /*2*/  [-1, -1,  0, -1], 
+ 			     /*3*/  [ 0, -1, -1, -1], 
+ 				 /*4*/  [ 5, -1, 10,  0], 
+			     /*5*/  [ 6,  4,  8, -1], 
+			     /*6*/  [-1,  5,  7,  1],
+				 /*7*/  [-1,  8, -1,  6],
+				 /*8*/  [ 7, 10,  9,  5],
+				 /*9*/  [-1, -1, -1,  8],
+				/*10*/  [ 8, -1, -1,  4] 
+		              ];		 
 			
-			var Loc3_piano_room = new locale();
-			Loc3_piano_room.id = 3;
-			Loc3_piano_room.name = "piano room";
-			Loc3_piano_room.message = "You are in a big room, there is a grand piano in the" +
-			                          " middle of the room and nothing else.";
-			Loc3_piano_room.hasItem = true;
-			Loc3_piano_room.item = itemMap.message;
-			
-			var Loc4_kitchen = new locale();
-			Loc4_kitchen.id = 4;
-			Loc4_kitchen.name = "kitchen";
-			Loc4_kitchen.message = "You have entered a kitchen.";
-			Loc4_kitchen.item = itemFlashlight.message;
-			Loc4_kitchen.hasItem = true;
-			
-			var Loc5_dining = new locale();
-			Loc5_dining.id = 5;
-			Loc5_dining.name = "dining";
-			Loc5_dining.message = "This is a dining hall. There is a large round table" + 
-			                      " in the middle of the room.";
-			Loc5_dining.item = "";
-			Loc5_dining.hasItem = false;
-			
-			var Loc6_small_corridor = new locale();
-			Loc6_small_corridor.id = 6;
-			Loc6_small_corridor.name = "small corridor";
-			Loc6_small_corridor.message = "You entered a small and narrow corridor. You can" + 
-			                              " see pictures of previous owners of the mansion"; 
-			Loc6_small_corridor.item = itemMusicSheet.message;
-			Loc6_small_corridor.hasItem = true;
-			
-			var Loc7_bedroom = new locale();
-			Loc7_bedroom.id = 7;
-			Loc7_bedroom.name = "bedroom";
-			Loc7_bedroom.message = "Now you are in a bedroom. There is a" +
-			                       " bad, a desk and an old mirror in the room";
-			Loc7_bedroom.item = "";
-			Loc7_bedroom.hasItem = false;
-			
-			var Loc8_large_hallway = new locale();
-			Loc8_large_hallway.id = 8;
-			Loc8_large_hallway.name = "large hallway";
-			Loc8_large_hallway.message = "You are in a large hallway now. You" + 
-			                             "can see different pictures of previous" + 
-									     "owners of the mansion.";
-			Loc8_large_hallway.item = itemBook.message;
-			Loc8_large_hallway.hasItem = true;
-			
-			var Loc9_stairs = new locale();
-			Loc9_stairs.id = 9;
-			Loc9_stairs.name = "stairs";
-			Loc9_stairs.message = "You reached stairs that lead to the second floor." + 
-			                      "The door to enter that floor is closed, so you" + 
-							      "cannot get there now.";
-			Loc9_stairs.item = "";
-			Loc9_stairs.hasItem = false;
-			
-			var Loc10_library = new locale();
-			Loc10_library.id = 10;
-			Loc10_library.name = "library";
-			Loc10_library.message = "This is a library. It is huge with high ceilings" + 
-			                        "and large windows. There is an enormous amount" + 
-								    "of books here.";
-			Loc10_library.item = "";
-			Loc10_library.hasItem = false;				 
-			
-		
-			  //Inventory prototype
+		     //Inventory prototype
 			function Item() {
 			  this.id = "";
 			  this.name = "";
@@ -196,8 +51,155 @@
 				itemBook.curLoc = 8;
 				itemBook.name = "Book";
 				itemBook.message = "Wow, there is a book in front of you!";
-				itemBook.isTaken = false;
-				
+				itemBook.isTaken = false;		   
+		   
+		    
+			 // global array for items and inventory
+			var items = new Array();
+			    items[3] = itemMap;
+			    items[4] = itemFlashlight;
+			    items[6] = itemMusicSheet;
+				items[8] = itemBook;
+		   
+			
+		    //global array for accumulated inventory (it is empty as you start playing...)
+			var inventory = new Array();
+		   
+			// Location prototype	
+		    function locale() {
+			 this.id = "";
+		     this.name = "";
+			 this.message = "";
+			 this.hasVisited = false;
+			 this.hasItem = "";
+			 this.item = function () {			 
+		    }
+			 this.toString = function() {
+				     var text = "";
+					 text = this.message + " " + this.item;
+					 return text;
+				    }	
+			}
+            // Location Instances within function locale()			
+			var Loc0_mansion_hall = new locale();
+			Loc0_mansion_hall.id = 0;
+			Loc0_mansion_hall.name = "mansion's hall";
+			Loc0_mansion_hall.message = "You are standing inside a mansion's hall. In the mansion" + 
+			                            " there is a canary in a cage covered with black cloth, so" + 
+									    " that it does not sing and you cannot hear it. Your aim is" + 
+										" to find the bird and release it. If it sings when flies" + 
+										" away, you will become the happiest person.";
+			Loc0_mansion_hall.hasVisited = false;
+			Loc0_mansion_hall.item = "";
+			Loc0_mansion_hall.hasItem = false;
+						
+		    var Loc1_dark_room = new locale();
+		    Loc1_dark_room.id = 1;
+			Loc1_dark_room.name = "dark room";
+			Loc1_dark_room.message = "You entered a dark room with no windows, so you cannot see"+ 
+			                         " anything...";
+			Loc1_dark_room.hasVisited = false;
+			Loc1_dark_room.item = "";
+			Loc1_dark_room.hasItem = false;
+		
+			var Loc2_living_room = new locale();
+			Loc2_living_room.id = 2;
+			Loc2_living_room.name = "living room";
+			Loc2_living_room.message = "You entered a living room, there is a table and an armchair"+ 
+			                           " in front of a chimney."; 
+			Loc2_living_room.hasVisited = false;
+			Loc2_living_room.item = "";
+			Loc2_living_room.hasItem = false;
+			
+			var Loc3_piano_room = new locale();
+			Loc3_piano_room.id = 3;
+			Loc3_piano_room.name = "piano room";
+			Loc3_piano_room.message = "You are in a big room, there is a grand piano in the" +
+			                          " middle of the room and nothing else.";
+			Loc3_piano_room.hasVisited = false;
+			Loc3_piano_room.hasItem = true;
+			Loc3_piano_room.item = itemMap.message;
+			
+			var Loc4_kitchen = new locale();
+			Loc4_kitchen.id = 4;
+			Loc4_kitchen.name = "kitchen";
+			Loc4_kitchen.message = "You have entered a kitchen.";
+			Loc4_kitchen.hasVisited = false;
+			Loc4_kitchen.item = itemFlashlight.message;
+			Loc4_kitchen.hasItem = true;
+			
+			var Loc5_dining = new locale();
+			Loc5_dining.id = 5;
+			Loc5_dining.name = "dining";
+			Loc5_dining.message = "This is a dining hall. There is a large round table" + 
+			                      " in the middle of the room.";
+			Loc5_dining.hasVisited = false;
+			Loc5_dining.item = "";
+			Loc5_dining.hasItem = false;
+			
+			var Loc6_small_corridor = new locale();
+			Loc6_small_corridor.id = 6;
+			Loc6_small_corridor.name = "small corridor";
+			Loc6_small_corridor.message = "You entered a small and narrow corridor. You can" + 
+			                              " see pictures of previous owners of the mansion";
+            Loc6_small_corridor.hasVisited = false;										  
+			Loc6_small_corridor.item = itemMusicSheet.message;
+			Loc6_small_corridor.hasItem = true;
+			
+			var Loc7_bedroom = new locale();
+			Loc7_bedroom.id = 7;
+			Loc7_bedroom.name = "bedroom";
+			Loc7_bedroom.message = "Now you are in a bedroom. There is a" +
+			                       " bad, a desk and an old mirror in the room";
+			Loc7_bedroom.hasVisited = false;
+			Loc7_bedroom.item = "";
+			Loc7_bedroom.hasItem = false;
+			
+			var Loc8_large_hallway = new locale();
+			Loc8_large_hallway.id = 8;
+			Loc8_large_hallway.name = "large hallway";
+			Loc8_large_hallway.message = "You are in a large hallway now. You" + 
+			                             "can see different pictures of previous" + 
+									     "owners of the mansion.";
+			Loc8_large_hallway.hasVisited = false;
+			Loc8_large_hallway.item = itemBook.message;
+			Loc8_large_hallway.hasItem = true;
+			
+			var Loc9_stairs = new locale();
+			Loc9_stairs.id = 9;
+			Loc9_stairs.name = "stairs";
+			Loc9_stairs.message = "You reached stairs that lead to the second floor." + 
+			                      "The door to enter that floor is closed, so you" + 
+							      "cannot get there now.";
+			Loc9_stairs.hasVisited - false;
+			Loc9_stairs.item = "";
+			Loc9_stairs.hasItem = false;
+			
+			var Loc10_library = new locale();
+			Loc10_library.id = 10;
+			Loc10_library.name = "library";
+			Loc10_library.message = "This is a library. It is huge with high ceilings" + 
+			                        "and large windows. There is an enormous amount" + 
+								    "of books here.";
+			Loc10_library.hasVisited = false;
+			Loc10_library.item = "";
+			Loc10_library.hasItem = false;				 
+			
+		
+			// global array for location instances
+            var locArray = new Array();
+			    locArray[0] = Loc0_mansion_hall,
+				locArray[1] = Loc1_dark_room,
+				locArray[2] = Loc2_living_room,			
+				locArray[3] = Loc3_piano_room,
+				locArray[4] = Loc4_kitchen,
+				locArray[5] = Loc5_dining,
+				locArray[6] = Loc6_small_corridor,
+				locArray[7] = Loc7_bedroom,
+				locArray[8] = Loc8_large_hallway,
+				locArray[9] = Loc9_stairs,
+				locArray[10] = Loc10_library
+			
 				
              //initial function
 		   function init() {
@@ -254,41 +256,39 @@
 				    }
 			  presentMessage(message);
 			}								
+	     
+			//navigation functions		   
+		    function btn_go_North() {
+			    nextLoc(NORTH);
+				updateDisplay(locArray[curLoc].message);				
+				checkScore();
+			}
 			
+			function btn_go_South() {
+			    nextLoc(SOUTH);
+				updateDisplay(locArray[curLoc].message);
+				checkScore();
+			}
 			
-           //navigation functions
-            function nextLoc(dir) {
-			 var dir = -1;
+			function btn_go_East() {
+			    nextLoc(EAST);
+				updateDisplay(locArray[curLoc].message);
+				checkScore();
+			}
+			
+			function btn_go_West() {
+			    nextLoc(WEST);
+				updateDisplay(locArray[curLoc].message);
+				checkScore();
+			}
+			
+             function nextLoc(dir) {
 			 var newLoc = nav [curLoc][dir];
 			     if (newLoc >= 0) {
 				    curLoc = newLoc;
 				} else {
 				    presentMessage("You cannot go that way!");
 					}
-			}
-		   
-		    function btn_go_North() {
-			    nextLoc(NORTH);
-				locale();
-				checkScore();
-			}
-			
-			function btn_go_South() {
-			    nextLoc(SOUTH);
-				locale();
-				checkScore();
-			}
-			
-			function btn_go_East() {
-			    nextLoc(EAST);
-				locale();
-				checkScore();
-			}
-			
-			function btn_go_West() {
-			    nextLoc(WEST);
-				locale();
-				checkScore();
 			}
 			
             function txtCommand_keypress(e) {
@@ -328,11 +328,7 @@
 			         checkScore();
 		             dspScore();
 			}
-		  		 		  		  		  
-		    /*function navigationError() {		          
-			  presentMessage("You cannot go that way.");		     		 		        
-		   }
-		   */
+
 		    function unknownCommand() {
 		      presentMessage("I don't understand your command.");
 		   }
@@ -453,69 +449,69 @@ function buttonVisibility() {
 		  // functions for keeping and showing score!
 		   function checkScore() {
 		     if (curLoc === 0) {
-		         if (! hasVisitedRoom0) {	        
+		         if (! Loc0_mansion_hall.hasVisited) {      
 			         score = score + 5;
-				     hasVisitedRoom0 = true;
+				     Loc0_mansion_hall.hasVisited = true;
 				 }
 		     }		     
 		    if (curLoc === 1) {			
-			      if (! hasVisitedRoom1) {			  
+			      if (! Loc1_dark_room.hasVisited) {			  
 			          score = score + 5;
-				      hasVisitedRoom1 = true;
+				      Loc1_dark_room.hasVisited = true;
 				  }
 			 }				 							 		
 			if (curLoc === 2) {
-			     if (! hasVisitedRoom2) {
+			     if (! Loc2_living_room.hasVisited) {
 			         score = score + 5;
-				     hasVisitedRoom2 = true;
+				     Loc2_living_room.hasVisited = true;
 				  }
 			 }				   			   
 			if (curLoc === 3) {
-				  if (! hasVisitedRoom3) {
+				  if (! Loc3_piano_room.hasVisited) {
 			          score = score + 5;
-				      hasVisitedRoom3 = true;
+				      Loc3_piano_room.hasVisited = true;
 			       }
 			 }				 
 			if (curLoc === 4) {
-			    if (! hasVisitedRoom4) {
+			    if (! Loc4_kitchen.hasVisited) {
 			        score = score + 5;
-				    hasVisitedRoom4 = true;				 
+				    Loc4_kitchen.hasVisited = true;				 
 			     }
 			 }				 
 			if (curLoc === 5) {
-			    if (! hasVisitedRoom5) {
+			    if (! Loc5_dining.hasVisited) {
 			        score = score + 5;
-				    hasVisitedRoom5 = true;				 
+				    Loc5_dining.hasVisited = true;				 
 			     }
 			 }				 
 			if (curLoc === 6) {
-			    if (! hasVisitedRoom6) {
+			    if (! Loc6_small_corridor.hasVisited) {
 			        score = score + 5;
-				    hasVisitedRoom6 = true;				 
+				    Loc6_small_corridor.hasVisited = true;				 
 			     }
 			 }				 
 			if (curLoc === 7) {
-			    if (! hasVisitedRoom7) {
+			    if (! Loc7_bedroom.hasVisited) {
 			        score = score + 5;
-				    hasVisitedRoom7 = true;				 
+				    Loc7_bedroom.hasVisited = true;				 
 			     }				 
 			 }			 
 			 if (curLoc === 8) {
-			    if (! hasVisitedRoom8) {
+			    if (! Loc8_large_hallway.hasVisited) {
 			        score = score + 5;
-				    hasVisitedRoom8 = true;				 
+				    Loc8_large_hallway.hasVisited = true;				 
 			     }
 			 }			 
 			 if (curLoc === 9) {
-			    if (! hasVisitedRoom9) {
+			    if (! Loc9_stairs.hasVisited) {
 			        score = score + 5;
-				    hasVisitedRoom9 = true;				 
+				    Loc9_stairs.hasVisited = true;				 
 			     }
 			 }			 
 			 if (curLoc === 10) {
-			    if (! hasVisitedRoom10) {
+			    if (! Loc10_library.hasVisited) {
 			        score = score + 5;
-				    hasVisitedRoom10 = true;				 
+				    Loc10_library.hasVisited = true;				 
 			     }
 			 }	 
 			 if (curLoc === 3 && inventory.indexOf("map") >= 0) {
