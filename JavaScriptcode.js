@@ -277,6 +277,7 @@
 				checkScore();
 				takeButtonVisibility();
 				buttonVisibility();
+				flashlightPuzzle();
 			}
 			
 			function btn_go_South() {
@@ -301,6 +302,7 @@
 				checkScore();
 				takeButtonVisibility();
 				buttonVisibility();
+				flashlightPuzzle();
 			}
 			
              function nextLoc(dir) {
@@ -312,6 +314,7 @@
 					}
 			}
 			
+			//utility functions
             function txtCommand_keypress(e) {
 				 if (e.which === 13) {
 				     document.getElementById("go").onclick();
@@ -343,7 +346,6 @@
 			               }
 		            }
 		  
-
 		    function unknownCommand() {
 		      presentMessage("I don't understand your command.");
 		   }
@@ -353,7 +355,7 @@
 			   presentMessage(message);			  
 		   }
 
-		   function btn_Help() {
+		    function btn_Help() {
 		        message = "Navigate with buttons north, south, east, or west." + 
 				          " Collect items available with by pressing Take button" + 
 						  " or typing take into the command text area. Check your" + 
@@ -361,15 +363,14 @@
 						  " reflected on the right. To see the map, you have to find it";
 				presentMessage(message);
 		   }
-		   
-		  //utility functions
-		   function presentMessage(message) {
-		    var target = document.getElementById("mainText");
-		    if (this.hasItem = true) {
-			        target.value = message + " " + locArray[curLoc].item + "\n\n" + target.value;
-			    } else {			   
-                    target.value = message + "\n\n" + target.value;
-				 }			
+		   		  
+		    function presentMessage(message) {
+		      var target = document.getElementById("mainText");
+		      if (this.hasItem = true) {
+			      target.value = message + " " + locArray[curLoc].item + "\n\n" + target.value;
+			  } else {			   
+                  target.value = message + "\n\n" + target.value;
+			  }			
 			   checkScore();
 		       dspScore();
             }	
@@ -401,7 +402,7 @@
 		}
 	  
 	    function btn_Play_Visibility() {		
-		   if (curLoc === 3 && itemMap.isTaken ) {
+		   if (itemMusicSheet.isTaken = true && curLoc === 3) {
 		       document.getElementById("play").disabled = false;
 		   } else {
 		        document.getElementById("play").disabled = true;
@@ -434,7 +435,13 @@
 		    }
 		}
 		   
-		   
+		function flashlightPuzzle() {
+            if (curLoc === 1 && itemFlashlight.isTaken) {
+			    presentMessage("You entered a dark room with no windows, so you cannot see"+ 
+			                             " anything. You have a flashlight, use it to see what's" + 
+										 "inside the room! Press Use button.");			
+            }
+        }   		
 		  // functions for keeping and showing score!
 		   function checkScore() {
 		     if (curLoc === 0) {
@@ -502,9 +509,30 @@
 			        score = score + 5;
 				    Loc10_library.hasVisited = true;				 
 			     }
-			 }	 
+			 }
+			 if (curLoc === 3) {
+                 if (itemMap.isTaken) {
+                     score = score + 2.5;
+                 }
+			 }
+			 if (curLoc === 4) {
+                 if (itemFlashlight.isTaken) {
+                     score = score + 2.5;
+                 }
+			 }
+			 if (curLoc === 6) {
+                 if (itemMusicSheet.isTaken) {
+                     score = score + 2.5;
+                 }
+			 }
+			 if (curLoc === 8) {
+                 if (itemBook.isTaken) {
+                     score = score + 2.5;
+                 }
+			 }
+          }				 
 			 
-		 }     			
+		      			
 		function dspScore() {			         
 			     document.getElementById("scoreText").value = "Score:" + score;
 		}
