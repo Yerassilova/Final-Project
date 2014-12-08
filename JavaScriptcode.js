@@ -5,6 +5,21 @@
 			var SOUTH = 1;
 			var EAST  = 2;
 			var WEST  = 3					
+			//global array for buttons visibility 
+			var buttons = [ /*N   S   E   W*/ 
+					 /*0*/  [ 0,  0,  0,  0],  
+					 /*1*/  [ 1,  0,  1,  0], 
+					 /*2*/  [ 1,  1,  0,  1], 
+					 /*3*/  [ 0,  1,  1,  1], 
+					 /*4*/  [ 0,  1,  0,  0], 
+					 /*5*/  [ 0,  0,  0,  1], 
+					 /*6*/  [ 1,  0,  0,  0],
+					 /*7*/  [ 1,  0,  1,  0],
+					 /*8*/  [ 0,  0,  0,  0],
+					 /*9*/  [ 1,  1,  1,  0],
+					/*10*/  [ 0,  1,  1,  0] 
+		              ];
+            var buttonsDeclare = new Array ("northBtn", "southBtn", "westBtn", "eastBtn");					  
 			
 		    //global array for navigation 
 			var nav = [ /*N   S   E   W*/ 
@@ -95,7 +110,7 @@
 		    Loc1_dark_room.id = 1;
 			Loc1_dark_room.name = "dark room";
 			Loc1_dark_room.message = "You entered a dark room with no windows, so you cannot see"+ 
-			                         " anything...";
+			                         " anything.";
 			Loc1_dark_room.hasVisited = false;
 			Loc1_dark_room.item = "";
 			Loc1_dark_room.hasItem = false;
@@ -201,8 +216,7 @@
 				
              //initial function
 		   function init() {
-			    presentMessage(Loc0_mansion_hall);
-				
+			    presentMessage(Loc0_mansion_hall);				
 				buttonVisibility();			
 			    document.getElementById("picture").style.visibility = "hidden";
 				takeButtonVisibility();
@@ -262,6 +276,7 @@
 				presentMessage(locArray[curLoc].message);				
 				checkScore();
 				takeButtonVisibility();
+				buttonVisibility();
 			}
 			
 			function btn_go_South() {
@@ -269,6 +284,7 @@
 				presentMessage(locArray[curLoc].message);
 				checkScore();
 				takeButtonVisibility();
+				buttonVisibility();
 			}
 			
 			function btn_go_East() {
@@ -276,6 +292,7 @@
 				presentMessage(locArray[curLoc].message);
 				checkScore();
 				takeButtonVisibility();
+				buttonVisibility();
 			}
 			
 			function btn_go_West() {
@@ -283,6 +300,7 @@
 				presentMessage(locArray[curLoc].message);
 				checkScore();
 				takeButtonVisibility();
+				buttonVisibility();
 			}
 			
              function nextLoc(dir) {
@@ -377,97 +395,44 @@
 						}
 			}
 			
-			// puzzle elements
+		// puzzle elements
         function btn_Play() {
 		    presentMessage("Wow, you are playing music! Do you hear the bird singing? It is somewhere close!");
 		}
 	  
-	   function btn_Play_visibility() {		
-		   if (curLoc === 3) {
+	    function btn_Play_Visibility() {		
+		   if (curLoc === 3 && itemMap.isTaken ) {
 		       document.getElementById("play").disabled = false;
 		   } else {
 		        document.getElementById("play").disabled = true;
 		   }
 		}
 			
-           function buttonVisibility() {
-		    btn_Play_visibility();
-		     switch(curLoc) {
-			    case 0: document.getElementById("northBtn").disabled = false;
-			            document.getElementById("southBtn").disabled = false;
-			            document.getElementById("westBtn").disabled = false;
-			            document.getElementById("eastBtn").disabled = false;
-						
-                        break;						
-				case 1: document.getElementById("northBtn").disabled = true;
-				        document.getElementById("westBtn").disabled = true;
-						
-						break;
-				case 2: document.getElementById("northBtn").disabled = true;
-			            document.getElementById("southBtn").disabled = true;
-			            document.getElementById("westBtn").disabled = true;
-						document.getElementById("eastBtn").disabled = false;
-						
-						break;
-				case 3: document.getElementById("southBtn").disabled = true;
-			            document.getElementById("westBtn").disabled = true;
-			            document.getElementById("eastBtn").disabled = true;
-						document.getElementById("northBtn").disabled = false;
-                        				
-						break;
-				case 4: document.getElementById("southBtn").disabled = true;
-				        document.getElementById("eastBtn").disabled = false;
-						document.getElementById("westBtn").disabled = false;
-						document.getElementById("northBtn").disabled = false;
-						
-						break;
-				case 5: document.getElementById("westBtn").disabled = true;
-			            document.getElementById("eastBtn").disabled = false;
-						document.getElementById("northBtn").disabled = false;
-			            document.getElementById("southBtn").disabled = false;
-						
-						break;
-				case 6: document.getElementById("northBtn").disabled = true;
-				        document.getElementById("southBtn").disabled = false;
-			            document.getElementById("westBtn").disabled = false;
-			            document.getElementById("eastBtn").disabled = false;
-						
-				        break;
-				case 7: document.getElementById("northBtn").disabled = true;
-			            document.getElementById("southBtn").disabled = false;
-						document.getElementById("eastBtn").disabled = true;
-						document.getElementById("westBtn").disabled = false;
-						
-						break;
-				case 8: document.getElementById("northBtn").disabled = false;
-			            document.getElementById("southBtn").disabled = false;
-						document.getElementById("eastBtn").disabled = false;
-						document.getElementById("westBtn").disabled = false;
-						
-						break;
-				case 9: document.getElementById("northBtn").disabled = true;
-			            document.getElementById("southBtn").disabled = true;
-						document.getElementById("eastBtn").disabled = true;
-						document.getElementById("westBtn").disabled = false;
-						
-						break;
-			   case 10: document.getElementById("northBtn").disabled = false;
-			            document.getElementById("southBtn").disabled = true;
-						document.getElementById("eastBtn").disabled = true;
-						document.getElementById("westBtn").disabled = false;
-						
-						break;
-			   default: document.getElementById("northBtn").disabled = false;
-			            document.getElementById("southBtn").disabled = false;
-			            document.getElementById("westBtn").disabled = false;
-			            document.getElementById("eastBtn").disabled = false; 
-						document.getElementById("takeButton").disabled = true;
-						
-					
+        function buttonVisibility() {
+		   btn_Use_Visibility();
+		   btn_Play_Visibility();
+		   for (var i=0;  i < buttonsDeclare.length; i++) {
+			    var disable_Main_Buttons = 0;
+			    disable_Main_Buttons = buttons [curLoc] [i];
+			    if (disable_Main_Buttons === 1) {
+			        document.getElementById(buttonsDeclare[i]).disabled = true;
+			    } else {
+			        document.getElementById(buttonsDeclare[i]).disabled = false;
 				}
-				
-		   }	
-
+            }
+		}
+        			
+        function btn_Use() {
+		    presentMessage("You are using the flashlight and now you can see an old closet in the room.");
+		}
+		
+		function btn_Use_Visibility() {
+		    if (curLoc === 1 && itemFlashlight.isTaken) {
+			    document.getElementById("use").disabled = false;
+		    } else {
+		        document.getElementById("use").disabled = true;
+		    }
+		}
 		   
 		   
 		  // functions for keeping and showing score!
