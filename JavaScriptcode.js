@@ -4,7 +4,8 @@
 			var NORTH = 0;
 			var SOUTH = 1;
 			var EAST  = 2;
-			var WEST  = 3					
+			var WEST  = 3;
+            var disable_Main_Buttons = 0;			
 			//global array for buttons visibility 
 			var buttons = [ /*N   S   E   W*/ 
 					 /*0*/  [ 0,  0,  0,  0],  
@@ -40,6 +41,7 @@
 			function Item() {
 			  this.id = "";
 			  this.name = "";
+			  this.countScore = "";
 			  this.description = "";
 			  this.isTaken = "";
 			}			
@@ -47,24 +49,28 @@
                 var itemMap = new Item();
 				itemMap.curLoc = 3;
 				itemMap.name = "Map";
+				itemMap.countScore = false;
 				itemMap.description = "There is a map on the piano.";
 			    itemMap.isTaken = false;
 
 				var itemFlashlight = new Item();
 				itemFlashlight.curLoc = 4;
 				itemFlashlight.name = "Flashlight";
+				itemFlashlight.countScore = false;
 				itemFlashlight.description = "There is a flashlight.";
 				itemFlashlight.isTaken = false;
 
 				var itemMusicSheet = new Item();
 				itemMusicSheet.curLoc = 6;
 				itemMusicSheet.name = "Music Sheet";
+				itemMusicSheet.countScore = false;
 				itemMusicSheet.description = "There is a music sheet on the floor.";
 				itemMusicSheet.isTaken = false;
 				
 				var itemBook = new Item();
 				itemBook.curLoc = 8;
 				itemBook.name = "Book";
+				itemBook.countScore = false;
 				itemBook.description = "Wow, there is a book in front of you!";
 				itemBook.isTaken = false;		   
 		   
@@ -110,7 +116,8 @@
 		    Loc1_dark_room.id = 1;
 			Loc1_dark_room.name = "dark room";
 			Loc1_dark_room.message = "You entered a dark room with no windows, so you cannot see"+ 
-			                         " anything.";
+			                         " anything. Find a flashlight and come back to see what's" + 
+									 " in the room";
 			Loc1_dark_room.hasVisited = false;
 			Loc1_dark_room.item = "";
 			Loc1_dark_room.hasItem = false;
@@ -227,6 +234,7 @@
 			function btn_take() {
 				if (curLoc === 3 && !itemMap.isTaken) {
 				    itemMap.isTaken = true;
+					itemMap.countScore = true;
 					Loc3_piano_room.item = "";
 					inventory.push(itemMap.name);
 					document.getElementById("picture").style.visibility = "visible";					
@@ -237,6 +245,7 @@
 				 } else {			 
 			        if (curLoc === 4 && !itemFlashlight.isTaken) {
 					    itemFlashlight.isTaken = true;
+						itemFlashlight.countScore = true;
 						Loc4_kitchen.item = "";
 						inventory.push(itemFlashlight.name);
 					    message = "You have taken the " + itemFlashlight.name + "!";	
@@ -246,6 +255,7 @@
                       } else {
                           if (curLoc === 6 && !itemMusicSheet.isTaken) {
 						      itemMusicSheet.isTaken = true;
+							  itemMusicSheet.countScore = true;
 							  Loc6_small_corridor.item = "";		
                               inventory.push(itemMusicSheet.name);							  
 					          message = "You have taken the " + itemMusicSheet.name + "!";
@@ -255,6 +265,7 @@
                             } else {
                                 if (curLoc === 8 && !itemBook.isTaken) {
 									itemBook.isTaken = true;
+									itemBook.countScore = true;
 									Loc8_large_hallway.item = "";		
 									inventory.push(itemBook.name);							  
 									message = "You have taken the " + itemBook.name + "!";
@@ -411,9 +422,8 @@
 			
         function buttonVisibility() {
 		   btn_Use_Visibility();
-		   btn_Play_Visibility();
-		   for (var i=0;  i < buttonsDeclare.length; i++) {
-			    var disable_Main_Buttons = 0;
+		   btn_Play_Visibility();		   
+		   for (var i=0;  i < buttonsDeclare.length; i++) {			    
 			    disable_Main_Buttons = buttons [curLoc] [i];
 			    if (disable_Main_Buttons === 1) {
 			        document.getElementById(buttonsDeclare[i]).disabled = true;
@@ -421,6 +431,7 @@
 			        document.getElementById(buttonsDeclare[i]).disabled = false;
 				}
             }
+
 		}
         			
         function btn_Use() {
@@ -434,101 +445,92 @@
 		        document.getElementById("use").disabled = true;
 		    }
 		}
-		   
-		function flashlightPuzzle() {
-            if (curLoc === 1 && itemFlashlight.isTaken) {
-			    presentMessage("You entered a dark room with no windows, so you cannot see"+ 
-			                             " anything. You have a flashlight, use it to see what's" + 
-										 "inside the room! Press Use button.");			
-            }
-        }   		
+		 	
+		 
+		function flashlightPuzzle() {		   
+			 if (curLoc === 1 && itemFlashlight.isTaken) {
+			     presentMessage("You entered a dark room with no windows, so you cannot see"+ 
+			                    " anything. You have a flashlight, use it to see what's" + 
+							    " inside the room! Press Use button.");	
+			}
+        }
+   		
 		  // functions for keeping and showing score!
 		   function checkScore() {
-		     if (curLoc === 0) {
-		         if (! Loc0_mansion_hall.hasVisited) {      
-			         score = score + 5;
-				     Loc0_mansion_hall.hasVisited = true;
-				 }
+		     if (curLoc === 0 && ! Loc0_mansion_hall.hasVisited) {		           
+			     score = score + 5;
+				  Loc0_mansion_hall.hasVisited = true;
+				 
 		     }		     
-		    if (curLoc === 1) {			
-			      if (! Loc1_dark_room.hasVisited) {			  
-			          score = score + 5;
-				      Loc1_dark_room.hasVisited = true;
-				  }
+		    if (curLoc === 1 && ! Loc1_dark_room.hasVisited) {						    			  
+			    score = score + 5;
+				Loc1_dark_room.hasVisited = true;
+				  
 			 }				 							 		
-			if (curLoc === 2) {
-			     if (! Loc2_living_room.hasVisited) {
-			         score = score + 5;
-				     Loc2_living_room.hasVisited = true;
-				  }
+			if (curLoc === 2 && ! Loc2_living_room.hasVisited) {			    
+			    score = score + 5;
+				Loc2_living_room.hasVisited = true;
+				  
 			 }				   			   
-			if (curLoc === 3) {
-				  if (! Loc3_piano_room.hasVisited) {
-			          score = score + 5;
-				      Loc3_piano_room.hasVisited = true;
-			       }
+			if (curLoc === 3 && ! Loc3_piano_room.hasVisited) {			  
+			    score = score + 5;
+				Loc3_piano_room.hasVisited = true;
+			       
 			 }				 
-			if (curLoc === 4) {
-			    if (! Loc4_kitchen.hasVisited) {
-			        score = score + 5;
-				    Loc4_kitchen.hasVisited = true;				 
-			     }
+			if (curLoc === 4 && ! Loc4_kitchen.hasVisited) {			    
+			    score = score + 5;
+				Loc4_kitchen.hasVisited = true;				 
+			     
 			 }				 
-			if (curLoc === 5) {
-			    if (! Loc5_dining.hasVisited) {
-			        score = score + 5;
-				    Loc5_dining.hasVisited = true;				 
-			     }
+			if (curLoc === 5 && ! Loc5_dining.hasVisited) {			    
+			    score = score + 5;
+				Loc5_dining.hasVisited = true;				 
+			     
 			 }				 
-			if (curLoc === 6) {
-			    if (! Loc6_small_corridor.hasVisited) {
-			        score = score + 5;
-				    Loc6_small_corridor.hasVisited = true;				 
-			     }
+			if (curLoc === 6 && ! Loc6_small_corridor.hasVisited) {			 
+			    score = score + 5;
+				Loc6_small_corridor.hasVisited = true;				 
+			     
 			 }				 
-			if (curLoc === 7) {
-			    if (! Loc7_bedroom.hasVisited) {
-			        score = score + 5;
-				    Loc7_bedroom.hasVisited = true;				 
-			     }				 
+			if (curLoc === 7 && ! Loc7_bedroom.hasVisited) {			  
+			    score = score + 5;
+				Loc7_bedroom.hasVisited = true;				 
+			     				 
 			 }			 
-			 if (curLoc === 8) {
-			    if (! Loc8_large_hallway.hasVisited) {
-			        score = score + 5;
-				    Loc8_large_hallway.hasVisited = true;				 
-			     }
+			 if (curLoc === 8 && ! Loc8_large_hallway.hasVisited) {			    
+			     score = score + 5;
+				 Loc8_large_hallway.hasVisited = true;				 
+			     
 			 }			 
-			 if (curLoc === 9) {
-			    if (! Loc9_stairs.hasVisited) {
-			        score = score + 5;
-				    Loc9_stairs.hasVisited = true;				 
-			     }
+			 if (curLoc === 9 && ! Loc9_stairs.hasVisited) {			    
+			     score = score + 5;
+				 Loc9_stairs.hasVisited = true;				 
+			     
 			 }			 
-			 if (curLoc === 10) {
-			    if (! Loc10_library.hasVisited) {
-			        score = score + 5;
-				    Loc10_library.hasVisited = true;				 
-			     }
+			 if (curLoc === 10 && ! Loc10_library.hasVisited) {			    
+			     score = score + 5;
+				 Loc10_library.hasVisited = true;				 
+			     
 			 }
-			 if (curLoc === 3) {
-                 if (itemMap.isTaken) {
-                     score = score + 2.5;
-                 }
+			 if (curLoc === 3 && itemMap.countScore) { 			 
+                 score = score + 5;
+				 itemMap.countScore = false;
+                 
 			 }
-			 if (curLoc === 4) {
-                 if (itemFlashlight.isTaken) {
-                     score = score + 2.5;
-                 }
+			 if (curLoc === 4 && itemFlashlight.countScore) {                
+                 score = score + 5;
+				 itemFlashlight.countScore = false;
+                 
 			 }
-			 if (curLoc === 6) {
-                 if (itemMusicSheet.isTaken) {
-                     score = score + 2.5;
-                 }
+			 if (curLoc === 6 && itemMusicSheet.countScore) {                 
+                 score = score + 5;
+				 itemMusicSheet.countScore = false;
+                 
 			 }
-			 if (curLoc === 8) {
-                 if (itemBook.isTaken) {
-                     score = score + 2.5;
-                 }
+			 if (curLoc === 8 && itemBook.countScore) {                
+                 score = score + 5;
+				 itemBook.countScore = false;
+                 
 			 }
           }				 
 			 
