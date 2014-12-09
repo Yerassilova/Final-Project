@@ -4,8 +4,8 @@
 			var NORTH = 0;
 			var SOUTH = 1;
 			var EAST  = 2;
-			var WEST  = 3;
-            var disable_Main_Buttons = 0;			
+			var WEST  = 3;	
+            var puzzle = true;			
 			//global array for buttons visibility 
 			var buttons = [ /*N   S   E   W*/ 
 					 /*0*/  [ 0,  0,  0,  0],  
@@ -73,7 +73,7 @@
 				itemBook.countScore = false;
 				itemBook.description = "Wow, there is a book in front of you!";
 				itemBook.isTaken = false;		   
-		   
+		    
 		    
 			 // global array for items and inventory
 			var items = new Array();
@@ -87,124 +87,122 @@
 		   
 			// Location prototype	
 		    function locale() {
-			 this.id = "";
-		     this.name = "";
-			 this.message = "";
-			 this.hasVisited = false;
-			 this.hasItem = "";
-			 this.item = "";
-			 this.toString = function() {
-				     var text = "";
-					 text = this.message + " " + this.item;
-					 return text;
-				    }	
-			}
-            // Location Instances 		
-			var Loc0_mansion_hall = new locale();
-			Loc0_mansion_hall.id = 0;
-			Loc0_mansion_hall.name = "mansion's hall";
-			Loc0_mansion_hall.message = "You are standing inside a mansion's hall. In the mansion" + 
-			                            " there is a canary in a cage covered with black cloth, so" + 
-									    " that it does not sing and you cannot hear it. Your aim is" + 
-										" to find the bird and release it. If it sings when flies" + 
-										" away, you will become the happiest person.";
-			Loc0_mansion_hall.hasVisited = false;
-			Loc0_mansion_hall.item = "";
-			Loc0_mansion_hall.hasItem = false;
-						
-		    var Loc1_dark_room = new locale();
-		    Loc1_dark_room.id = 1;
-			Loc1_dark_room.name = "dark room";
-			Loc1_dark_room.message = "You entered a dark room with no windows, so you cannot see"+ 
-			                         " anything. Find a flashlight and come back to see what's" + 
-									 " in the room";
-			Loc1_dark_room.hasVisited = false;
-			Loc1_dark_room.item = "";
-			Loc1_dark_room.hasItem = false;
-		
-			var Loc2_living_room = new locale();
-			Loc2_living_room.id = 2;
-			Loc2_living_room.name = "living room";
-			Loc2_living_room.message = "You entered a living room, there is a table and an armchair"+ 
-			                           " in front of a chimney."; 
-			Loc2_living_room.hasVisited = false;
-			Loc2_living_room.item = "";
-			Loc2_living_room.hasItem = false;
+				 this.id = "";
+				 this.name = "";
+				 this.message = "";
+				 this.hasVisited = false;
+				 this.hasItem = "";
+				 this.item = "";
+				 this.toString = function() {
+						 var text = "";
+						 text = this.message + " " + this.item;
+						 return text;
+						}	
+			}	
+				// Location Instances 		
+				var Loc0_mansion_hall = new locale();
+				Loc0_mansion_hall.id = 0;
+				Loc0_mansion_hall.name = "mansion's hall";
+				Loc0_mansion_hall.message = "You are standing inside a mansion's hall. In the mansion" + 
+											" there is a canary in a cage covered with black cloth, so" + 
+											" that it does not sing and you cannot hear it. Your aim is" + 
+											" to find the bird and release it. If it sings when flies" + 
+											" away, you will become the happiest person.";
+				Loc0_mansion_hall.hasVisited = false;
+				Loc0_mansion_hall.item = "";
+				Loc0_mansion_hall.hasItem = false;
+							
+				var Loc1_dark_room = new locale();
+				Loc1_dark_room.id = 1;
+				Loc1_dark_room.name = "dark room";
+				Loc1_dark_room.message = "You entered a dark room with no windows.";
+				Loc1_dark_room.hasVisited = false;
+				Loc1_dark_room.item = "";
+				Loc1_dark_room.hasItem = false;
 			
-			var Loc3_piano_room = new locale();
-			Loc3_piano_room.id = 3;
-			Loc3_piano_room.name = "piano room";
-			Loc3_piano_room.message = "You are in a big room, there is a grand piano in the" +
-			                          " middle of the room and nothing else.";
-			Loc3_piano_room.hasVisited = false;
-			Loc3_piano_room.hasItem = true;
-			Loc3_piano_room.item = itemMap.description;
-			
-			var Loc4_kitchen = new locale();
-			Loc4_kitchen.id = 4;
-			Loc4_kitchen.name = "kitchen";
-			Loc4_kitchen.message = "You have entered a kitchen.";
-			Loc4_kitchen.hasVisited = false;
-			Loc4_kitchen.item = itemFlashlight.description;
-			Loc4_kitchen.hasItem = true;
-			
-			var Loc5_dining = new locale();
-			Loc5_dining.id = 5;
-			Loc5_dining.name = "dining";
-			Loc5_dining.message = "This is a dining hall. There is a large round table" + 
-			                      " in the middle of the room.";
-			Loc5_dining.hasVisited = false;
-			Loc5_dining.item = "";
-			Loc5_dining.hasItem = false;
-			
-			var Loc6_small_corridor = new locale();
-			Loc6_small_corridor.id = 6;
-			Loc6_small_corridor.name = "small corridor";
-			Loc6_small_corridor.message = "You entered a small and narrow corridor. You can" + 
-			                              " see pictures of previous owners of the mansion";
-            Loc6_small_corridor.hasVisited = false;										  
-			Loc6_small_corridor.item = itemMusicSheet.description;
-			Loc6_small_corridor.hasItem = true;
-			
-			var Loc7_bedroom = new locale();
-			Loc7_bedroom.id = 7;
-			Loc7_bedroom.name = "bedroom";
-			Loc7_bedroom.message = "Now you are in a bedroom. There is a" +
-			                       " bad, a desk and an old mirror in the room";
-			Loc7_bedroom.hasVisited = false;
-			Loc7_bedroom.item = "";
-			Loc7_bedroom.hasItem = false;
-			
-			var Loc8_large_hallway = new locale();
-			Loc8_large_hallway.id = 8;
-			Loc8_large_hallway.name = "large hallway";
-			Loc8_large_hallway.message = "You are in a large hallway now. You" + 
-			                             "can see different pictures of previous" + 
-									     "owners of the mansion.";
-			Loc8_large_hallway.hasVisited = false;
-			Loc8_large_hallway.item = itemBook.description;
-			Loc8_large_hallway.hasItem = true;
-			
-			var Loc9_stairs = new locale();
-			Loc9_stairs.id = 9;
-			Loc9_stairs.name = "stairs";
-			Loc9_stairs.message = "You reached stairs that lead to the second floor." + 
-			                      "The door to enter that floor is closed, so you" + 
-							      "cannot get there now.";
-			Loc9_stairs.hasVisited - false;
-			Loc9_stairs.item = "";
-			Loc9_stairs.hasItem = false;
-			
-			var Loc10_library = new locale();
-			Loc10_library.id = 10;
-			Loc10_library.name = "library";
-			Loc10_library.message = "This is a library. It is huge with high ceilings" + 
-			                        "and large windows. There is an enormous amount" + 
-								    "of books here.";
-			Loc10_library.hasVisited = false;
-			Loc10_library.item = "";
-			Loc10_library.hasItem = false;				 
-			
+				var Loc2_living_room = new locale();
+				Loc2_living_room.id = 2;
+				Loc2_living_room.name = "living room";
+				Loc2_living_room.message = "You entered a living room, there is a table and an armchair"+ 
+										   " in front of a chimney."; 
+				Loc2_living_room.hasVisited = false;
+				Loc2_living_room.item = "";
+				Loc2_living_room.hasItem = false;
+				
+				var Loc3_piano_room = new locale();
+				Loc3_piano_room.id = 3;
+				Loc3_piano_room.name = "piano room";
+				Loc3_piano_room.message = "You are in a big room, there is a grand piano in the" +
+										  " middle of the room and nothing else.";
+				Loc3_piano_room.hasVisited = false;
+				Loc3_piano_room.hasItem = true;
+				Loc3_piano_room.item = itemMap.description;
+				
+				var Loc4_kitchen = new locale();
+				Loc4_kitchen.id = 4;
+				Loc4_kitchen.name = "kitchen";
+				Loc4_kitchen.message = "You have entered a kitchen.";
+				Loc4_kitchen.hasVisited = false;
+				Loc4_kitchen.item = itemFlashlight.description;
+				Loc4_kitchen.hasItem = true;
+				
+				var Loc5_dining = new locale();
+				Loc5_dining.id = 5;
+				Loc5_dining.name = "dining";
+				Loc5_dining.message = "This is a dining hall. There is a large round table" + 
+									  " in the middle of the room.";
+				Loc5_dining.hasVisited = false;
+				Loc5_dining.item = "";
+				Loc5_dining.hasItem = false;
+				
+				var Loc6_small_corridor = new locale();
+				Loc6_small_corridor.id = 6;
+				Loc6_small_corridor.name = "small corridor";
+				Loc6_small_corridor.message = "You entered a small and narrow corridor. You can" + 
+											  " see pictures of previous owners of the mansion";
+				Loc6_small_corridor.hasVisited = false;										  
+				Loc6_small_corridor.item = itemMusicSheet.description;
+				Loc6_small_corridor.hasItem = true;
+				
+				var Loc7_bedroom = new locale();
+				Loc7_bedroom.id = 7;
+				Loc7_bedroom.name = "bedroom";
+				Loc7_bedroom.message = "Now you are in a bedroom. There is a" +
+									   " bad, a desk and an old mirror in the room";
+				Loc7_bedroom.hasVisited = false;
+				Loc7_bedroom.item = "";
+				Loc7_bedroom.hasItem = false;
+				
+				var Loc8_large_hallway = new locale();
+				Loc8_large_hallway.id = 8;
+				Loc8_large_hallway.name = "large hallway";
+				Loc8_large_hallway.message = "You are in a large hallway now. You" + 
+											 "can see different pictures of previous" + 
+											 "owners of the mansion.";
+				Loc8_large_hallway.hasVisited = false;
+				Loc8_large_hallway.item = itemBook.description;
+				Loc8_large_hallway.hasItem = true;
+				
+				var Loc9_stairs = new locale();
+				Loc9_stairs.id = 9;
+				Loc9_stairs.name = "stairs";
+				Loc9_stairs.message = "You reached stairs that lead to the second floor." + 
+									  "The door to enter that floor is closed, so you" + 
+									  "cannot get there now.";
+				Loc9_stairs.hasVisited - false;
+				Loc9_stairs.item = "";
+				Loc9_stairs.hasItem = false;
+				
+				var Loc10_library = new locale();
+				Loc10_library.id = 10;
+				Loc10_library.name = "library";
+				Loc10_library.message = "This is a library. It is huge with high ceilings" + 
+										"and large windows. There is an enormous amount" + 
+										"of books here.";
+				Loc10_library.hasVisited = false;
+				Loc10_library.item = "";
+				Loc10_library.hasItem = false;				 
+		    	
 		
 			// global array for location instances
             var locArray = new Array();
@@ -223,6 +221,8 @@
 				
              //initial function
 		   function init() {
+		        //Item();
+				//locale();
 			    presentMessage(Loc0_mansion_hall);				
 				buttonVisibility();			
 			    document.getElementById("picture").style.visibility = "hidden";
@@ -419,39 +419,56 @@
 		        document.getElementById("play").disabled = true;
 		   }
 		}
-			
-        function buttonVisibility() {
-		   btn_Use_Visibility();
-		   btn_Play_Visibility();		   
-		   for (var i=0;  i < buttonsDeclare.length; i++) {			    
-			    disable_Main_Buttons = buttons [curLoc] [i];
-			    if (disable_Main_Buttons === 1) {
-			        document.getElementById(buttonsDeclare[i]).disabled = true;
-			    } else {
-			        document.getElementById(buttonsDeclare[i]).disabled = false;
-				}
-            }
-
-		}
-        			
+		
         function btn_Use() {
-		    presentMessage("You are using the flashlight and now you can see an old closet in the room.");
+            puzzle = false;		
+		    presentMessage("You are using the flashlight and now you can see an old" + 
+			               " closet in the room. You can also navigate from the room now.");
 		}
 		
-		function btn_Use_Visibility() {
+		function btn_Use_Visibility() {		  
 		    if (curLoc === 1 && itemFlashlight.isTaken) {
 			    document.getElementById("use").disabled = false;
 		    } else {
 		        document.getElementById("use").disabled = true;
 		    }
 		}
+		
+        function buttonVisibility() {
+		   btn_Use_Visibility();
+		   btn_Play_Visibility();			   
+		   for (var i=0;  i < buttonsDeclare.length; i++) {			    
+			    disable_Main_Buttons = buttons [curLoc] [i];
+			    if (disable_Main_Buttons === 1) {
+			        document.getElementById(buttonsDeclare[i]).disabled = true;
+					} else {
+					    if (curLoc === 1 && ! itemFlashlight.isTaken) {						   
+						    document.getElementById("eastBtn").disabled = true;
+					     } else {
+						    if(curLoc === 1 && ! puzzle) {
+							   document.getElementById("eastBtn").disabled = false;  
+							} else {
+			                  document.getElementById(buttonsDeclare[i]).disabled = false;
+                    }
+                }
+				}
+				}
+				}
+		
+        			
+        
 		 	
 		 
-		function flashlightPuzzle() {		   
-			 if (curLoc === 1 && itemFlashlight.isTaken) {
-			     presentMessage("You entered a dark room with no windows, so you cannot see"+ 
-			                    " anything. You have a flashlight, use it to see what's" + 
-							    " inside the room! Press Use button.");	
+		function flashlightPuzzle() {
+            if (curLoc === 1 && ! itemFlashlight.isTaken) {
+			    disable_Main_Buttons === 1;
+				presentMessage("You need a flashlight to proceed through the room.");
+                
+            } else {			
+			    if (curLoc === 1 && itemFlashlight.isTaken) {
+			        presentMessage("You have a flashlight, use it to see what's" + 
+							       " inside the room! Press Use button.");	
+			    }
 			}
         }
    		
@@ -459,7 +476,7 @@
 		   function checkScore() {
 		     if (curLoc === 0 && ! Loc0_mansion_hall.hasVisited) {		           
 			     score = score + 5;
-				  Loc0_mansion_hall.hasVisited = true;
+				 Loc0_mansion_hall.hasVisited = true;
 				 
 		     }		     
 		    if (curLoc === 1 && ! Loc1_dark_room.hasVisited) {						    			  
