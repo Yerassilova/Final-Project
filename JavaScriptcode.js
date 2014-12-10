@@ -6,10 +6,28 @@
 			var EAST  = 2;
 			var WEST  = 3;	
             var puzzle = false;	
-
-            var buttons = [ /*N   S   E   W*/ 
+				
+            			  
+			
+		    //global array for navigation 
+			           // 0   1   2   3
+			var nav = [ /*N   S   E   W*/ 
+			     /*0*/  [-1,  3,  4,  2],  
+			     /*1*/  [-1,  0,  6, -1], 
+				 /*2*/  [-1, -1,  0, -1], 
+ 			     /*3*/  [ 0, -1, -1, -1], 
+ 				 /*4*/  [ 5, -1, 10,  0], 
+			     /*5*/  [ 6,  4,  8, -1], 
+			     /*6*/  [ 1,  5,  7, -1],
+				 /*7*/  [-1,  8, -1,  6],
+				 /*8*/  [ 7, 10,  9,  5],
+				 /*9*/  [-1, -1, -1,  8],
+				/*10*/  [ 8, -1, -1,  4] 
+		              ];		 
+					  
+			var buttons = [ /*N   S   E   W*/ 
 					 /*0*/  [ 0,  0,  0,  0],  
-					 /*1*/  [ 1,  0,  1,  0], 
+					 /*1*/  [ 1,  0,  0,  1], 
 					 /*2*/  [ 1,  1,  0,  1], 
 					 /*3*/  [ 0,  1,  1,  1], 
 					 /*4*/  [ 0,  1,  0,  0], 
@@ -18,25 +36,9 @@
 					 /*7*/  [ 1,  0,  1,  0],
 					 /*8*/  [ 0,  0,  0,  0],
 					 /*9*/  [ 1,  1,  1,  0],
-					/*10*/  [ 0,  1,  1,  0] 			
-			             ];
-            var buttonsDeclare = new Array ("northBtn", "southBtn", "westBtn", "eastBtn");					  
-			
-		    //global array for navigation 
-			           // 0   1   2   3
-			var nav = [ /*N   S   E   W*/ 
-			     /*0*/  [ 1,  3,  4,  2],  
-			     /*1*/  [-1,  0,  6, -1], 
-				 /*2*/  [-1, -1,  0, -1], 
- 			     /*3*/  [ 0, -1, -1, -1], 
- 				 /*4*/  [ 5, -1, 10,  0], 
-			     /*5*/  [ 6,  4,  8, -1], 
-			     /*6*/  [-1,  5,  7,  1],
-				 /*7*/  [-1,  8, -1,  6],
-				 /*8*/  [ 7, 10,  9,  5],
-				 /*9*/  [-1, -1, -1,  8],
-				/*10*/  [ 8, -1, -1,  4] 
-		              ];		 
+					/*10*/  [ 0,  1,  1,  0] 
+		              ];
+            var buttonsDeclare = new Array ("northBtn", "southBtn", "eastBtn", "westBtn");
 			
 		     //Inventory prototype
 			function Item() {
@@ -189,25 +191,26 @@
 				Loc8_large_hallway.item = itemBook.description;
 				Loc8_large_hallway.hasItem = true;
 				
-				var Loc9_stairs = new locale();
-				Loc9_stairs.id = 9;
-				Loc9_stairs.name = "stairs";
-				Loc9_stairs.message = "You reached stairs that lead to the second floor." + 
-									  "The door to enter that floor is closed, so you" + 
-									  "cannot get there now.";
-				Loc9_stairs.hasVisited - false;
-				Loc9_stairs.item = "";
-				Loc9_stairs.hasItem = false;
-				
-				var Loc10_library = new locale();
-				Loc10_library.id = 10;
-				Loc10_library.name = "library";
-				Loc10_library.message = "This is a library. It is huge with high ceilings" + 
+				var Loc9_library = new locale();
+				Loc9_library.id = 9;
+				Loc9_library.name = "library";
+				Loc9_library.message = "This is a library. It is huge with high ceilings" + 
 										"and large windows. There is an enormous amount" + 
 										"of books here.";
-				Loc10_library.hasVisited = false;
-				Loc10_library.item = "";
-				Loc10_library.hasItem = false;	
+				Loc9_library.hasVisited = false;
+				Loc9_library.item = "";
+				Loc9_library.hasItem = false;
+
+				
+				var Loc10_stairs = new locale();
+				Loc10_stairs.id = 10;
+				Loc10_stairs.name = "stairs";
+				Loc10_stairs.message = "You reached stairs that lead to the second floor." + 
+									  "The door to enter that floor is closed, so you" + 
+									  "cannot get there now.";
+				Loc10_stairs.hasVisited - false;
+				Loc10_stairs.item = "";
+				Loc10_stairs.hasItem = false;
 				
 				locArray[0] = Loc0_mansion_hall,
 				locArray[1] = Loc1_dark_room,
@@ -218,8 +221,8 @@
 				locArray[6] = Loc6_small_corridor,
 				locArray[7] = Loc7_bedroom,
 				locArray[8] = Loc8_large_hallway,
-				locArray[9] = Loc9_stairs,
-				locArray[10] = Loc10_library
+				locArray[9] = Loc9_library,
+				locArray[10] = Loc10_stairs
 				
 			    presentMessage(Loc0_mansion_hall);				
 				buttonVisibility();			
@@ -312,14 +315,32 @@
 				buttonVisibility();				
 			}
 			
-             function nextLoc(dir) {
-			     var newLoc = nav [curLoc][dir];
+            function nextLoc(dir) {
+			   var newLoc = nav [curLoc][dir];
 			     if (newLoc >= 0) {		
-					 curLoc = newLoc;					
-				} else {
-				    presentMessage("You cannot go that way!");
+					curLoc = newLoc;
+                } else {
+                    if (items[4].isTaken && curLoc === 0) {
+					    curLoc = 1;
+					    newLoc = 1;
+					    curLoc === newLoc;						
+			            nav [0][0] = 1; 
+					} else {
+                         if (items[4].isTaken && curLoc === 6) {
+                           curLoc = 1;
+						   newLoc =1;
+						   curLoc = newLoc;
+						   nav [6][3] = 1;
+                        } else {
+				             presentMessage("You cannot go that way!");
+				        }
+				    }
 				}
 			}
+				
+			
+			
+			
 			
 			
 			
@@ -428,6 +449,7 @@
 			    disable_Main_Buttons = buttons [curLoc] [i];
 			    if (disable_Main_Buttons === 1) {
 			        document.getElementById(buttonsDeclare[i]).disabled = true;
+					
 					      } else {						       
 			                  document.getElementById(buttonsDeclare[i]).disabled = false;
                             }
@@ -436,9 +458,15 @@
 				}
 				
 					
-                    
+    /*    function changenavigation() {
+		var enableLoc1 = nav [curLoc][dir];
+            if (items[4].isTaken) {
+			nav [0][0] = 1;
+			
+			}
+        }		
 					
-					
+			*/		
 					
 		
 		
