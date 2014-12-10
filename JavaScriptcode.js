@@ -5,7 +5,7 @@
 			var SOUTH = 1;
 			var EAST  = 2;
 			var WEST  = 3;	
-            var puzzle = true;			
+            var puzzle = false;			
 			//global array for buttons visibility 
 			var buttons = [ /*N   S   E   W*/ 
 					 /*0*/  [ 0,  0,  0,  0],  
@@ -305,6 +305,7 @@
 				checkScore();
 				takeButtonVisibility();
 				buttonVisibility();
+				
 			}
 			
 			function btn_go_West() {
@@ -340,9 +341,9 @@
 			           if (txtCommand.value === "south" || txtCommand.value === "s") {
 				           btn_go_South();
 				         } else {
-					         if (txtCommand.value === "east" || txtCommand.value === "e") {
-						         btn_go_East();
-					           } else {
+					         if (txtCommand.value === "east" || txtCommand.value === "e") {							    
+						         btn_go_East();                                
+							   } else {
 						           if (txtCommand.value === "west" || txtCommand.value === "w") {
 							           btn_go_West();
 							         } else {
@@ -356,6 +357,7 @@
 					            }
 			               }
 		            }
+					
 		  
 		    function unknownCommand() {
 		      presentMessage("I don't understand your command.");
@@ -415,15 +417,50 @@
 	    function btn_Play_Visibility() {		
 		   if (itemMusicSheet.isTaken = true && curLoc === 3) {
 		       document.getElementById("play").disabled = false;
-		   } else {
+		    } else {
 		        document.getElementById("play").disabled = true;
-		   }
+		    }
 		}
 		
-        function btn_Use() {
-            puzzle = false;		
+        
+		
+        function buttonVisibility() {		
+		   btn_Use_Visibility();
+		   btn_Play_Visibility();
+     	   for (var i=0;  i < buttonsDeclare.length; i++) {			    
+			    disable_Main_Buttons = buttons [curLoc] [i];
+			    if (disable_Main_Buttons === 1) {
+			        document.getElementById(buttonsDeclare[i]).disabled = true;
+					} else {
+					    if (curLoc === 1 && ! itemFlashlight.isTaken) {						   
+						    document.getElementById("eastBtn").disabled = true;
+					      } else {						       
+			                  document.getElementById(buttonsDeclare[i]).disabled = false;
+                            }
+					
+                    }
+				}
+			buttonEastPuzzle();
+		}
+				
+		function buttonEastPuzzle() {
+            if(curLoc === 1 && itemFlashlight.isTaken && puzzle) {
+			   document.getElementById("eastBtn").disabled = false;
+                 } else {
+				    if (curLoc === 1 && itemFlashlight.isTaken && ! puzzle) {
+		             document.getElementById("eastBtn").disabled = true;
+					 }
+			     }
+		    }
+		
+		
+        			
+				
+		function btn_Use() {
+            puzzle = true;		
 		    presentMessage("You are using the flashlight and now you can see an old" + 
 			               " closet in the room. You can also navigate from the room now.");
+			 buttonEastPuzzle();
 		}
 		
 		function btn_Use_Visibility() {		  
@@ -433,28 +470,6 @@
 		        document.getElementById("use").disabled = true;
 		    }
 		}
-		
-        function buttonVisibility() {
-		   btn_Use_Visibility();
-		   btn_Play_Visibility();			   
-		   for (var i=0;  i < buttonsDeclare.length; i++) {			    
-			    disable_Main_Buttons = buttons [curLoc] [i];
-			    if (disable_Main_Buttons === 1) {
-			        document.getElementById(buttonsDeclare[i]).disabled = true;
-					} else {
-					    if (curLoc === 1 && ! itemFlashlight.isTaken) {						   
-						    document.getElementById("eastBtn").disabled = true;
-					     } else {
-						    if(curLoc === 1 && ! puzzle) {
-							   document.getElementById("eastBtn").disabled = false;  
-							} else {
-			                  document.getElementById(buttonsDeclare[i]).disabled = false;
-                    }
-                }
-				}
-				}
-				}
-		
         			
         
 		 	
@@ -462,7 +477,7 @@
 		function flashlightPuzzle() {
             if (curLoc === 1 && ! itemFlashlight.isTaken) {
 			    disable_Main_Buttons === 1;
-				presentMessage("You need a flashlight to proceed through the room.");
+				presentMessage("You need a flashlight to proceed through the room and see what is inside.");
                 
             } else {			
 			    if (curLoc === 1 && itemFlashlight.isTaken) {
