@@ -6,21 +6,8 @@
 			var EAST  = 2;
 			var WEST  = 3;	
             var puzzle = false;			
-			//global array for buttons visibility 
-			var buttons = [ /*N   S   E   W*/ 
-					 /*0*/  [ 0,  0,  0,  0],  
-					 /*1*/  [ 1,  0,  1,  0], 
-					 /*2*/  [ 1,  1,  0,  1], 
-					 /*3*/  [ 0,  1,  1,  1], 
-					 /*4*/  [ 0,  1,  0,  0], 
-					 /*5*/  [ 0,  0,  0,  1], 
-					 /*6*/  [ 1,  0,  0,  0],
-					 /*7*/  [ 1,  0,  1,  0],
-					 /*8*/  [ 0,  0,  0,  0],
-					 /*9*/  [ 1,  1,  1,  0],
-					/*10*/  [ 0,  1,  1,  0] 
-		              ];
-            var buttonsDeclare = new Array ("northBtn", "southBtn", "westBtn", "eastBtn");					  
+			
+            //var buttonsDeclare = new Array ("northBtn", "southBtn", "westBtn", "eastBtn");					  
 			
 		    //global array for navigation 
 			var nav = [ /*N   S   E   W*/ 
@@ -314,12 +301,13 @@
 			}
 			
              function nextLoc(dir) {
-			 var newLoc = nav [curLoc][dir];
-			     if (newLoc >= 0) {
-				    curLoc = newLoc;
+			     var newLoc = nav [curLoc][dir];
+			     if (newLoc >= 0) {		
+					    curLoc = newLoc;
+					
 				} else {
 				    presentMessage("You cannot go that way!");
-					}
+				}
 			}
 			
 			
@@ -422,24 +410,24 @@
 		
         
 		
-        function buttonVisibility() {		
+        function buttonVisibility(dir) {		
 		   btn_Use_Visibility();
 		   btn_Play_Visibility();
-     	   for (var i=0;  i < buttonsDeclare.length; i++) {			    
-			    disable_Main_Buttons = buttons [curLoc] [i];
-			    if (disable_Main_Buttons === 1) {
-			        document.getElementById(buttonsDeclare[i]).disabled = true;
-					} else {
-					    if (curLoc === 1 && ! items[4].isTaken) {						   
-						    document.getElementById("eastBtn").disabled = true;
-					      } else {						       
-			                  document.getElementById(buttonsDeclare[i]).disabled = false;
+     	   //for (var dir=-1;  dir < buttonsDeclare.length; dir++) {			    
+			    var disable_Main_Buttons = nav [curLoc] [dir];
+			    if (disable_Main_Buttons > -1) { 
+			        document.getElementById(buttonsDeclare[dir]).disabled = false;
+					
+					      } else {	
+                        						  
+			                  document.getElementById(buttonsDeclare[dir]).disabled = true;
                             }
 					
                     }
-				}
-			buttonEastPuzzle();
-		}
+					}
+				
+			//buttonEastPuzzle();
+		
 				
 		function buttonEastPuzzle() {
             if(curLoc === 1 && items[4].isTaken && puzzle) {
