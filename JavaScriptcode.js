@@ -1,4 +1,7 @@
-            // global variables and arrays
+            /*  Liliya Yerassilova
+			    Final Project  CMPT 120   */
+			
+			// global variables and arrays
 			var curLoc = 0;		
 			var score = 0;
 			var NORTH = 0;
@@ -109,9 +112,11 @@
 				var Loc0_mansion_hall = new locale();
 				Loc0_mansion_hall.id = 0;
 				Loc0_mansion_hall.name = "mansion's hall";
-				Loc0_mansion_hall.message = "You are standing inside a mansion's hall. In the mansion" + 
-											" there is a canary in a cage covered with black cloth, so" + 
-											" that it does not sing and you cannot hear it. Your aim is" + 
+				Loc0_mansion_hall.message = "You are standing inside a mansion's hall." + 
+				                            " In the mansion there is a canary in a" + 
+											" cage covered with black cloth, so" + 
+											" that it does not sing and you cannot hear" + 
+											" it. Your aim is" + 
 											" to find the bird and release it.";
 				Loc0_mansion_hall.hasVisited = false;
 				Loc0_mansion_hall.item = "";
@@ -120,8 +125,9 @@
 				var Loc1_dark_room = new locale();
 				Loc1_dark_room.id = 1;
 				Loc1_dark_room.name = "dark room";
-				Loc1_dark_room.message = "You entered a dark room with no windows. Press Use to" + 
-				                         " switch the flashlight on and see what's inside.";
+				Loc1_dark_room.message = "You entered a dark room with no windows." + 
+				                         " Press Use to switch the flashlight on" + 
+										 " and see what's inside.";
 				Loc1_dark_room.hasVisited = false;
 				Loc1_dark_room.item = "";
 				Loc1_dark_room.hasItem = false;
@@ -129,7 +135,8 @@
 				var Loc2_living_room = new locale();
 				Loc2_living_room.id = 2;
 				Loc2_living_room.name = "living room";
-				Loc2_living_room.message = "You entered a living room, there is a table and an armchair"+ 
+				Loc2_living_room.message = "You entered a living room," + 
+				                           " there is a table and an armchair"+ 
 										   " in front of a chimney."; 
 				Loc2_living_room.hasVisited = false;
 				Loc2_living_room.item = "";
@@ -138,7 +145,8 @@
 				var Loc3_piano_room = new locale();
 				Loc3_piano_room.id = 3;
 				Loc3_piano_room.name = "piano room";
-				Loc3_piano_room.message = "You are in a big room, there is a grand piano in the" +
+				Loc3_piano_room.message = "You are in a big room, there is" + 
+				                          " a grand piano in the" +
 										  " middle of the room and nothing else.";
 				Loc3_piano_room.hasVisited = false;
 				Loc3_piano_room.hasItem = true;
@@ -155,8 +163,8 @@
 				var Loc5_dining = new locale();
 				Loc5_dining.id = 5;
 				Loc5_dining.name = "dining";
-				Loc5_dining.message = "This is a dining hall. There is a large round table" + 
-									  " in the middle of the room.";
+				Loc5_dining.message = "This is a dining hall. There is a large round" +
+                  				      " table in the middle of the room.";
 				Loc5_dining.hasVisited = false;
 				Loc5_dining.item = "";
 				Loc5_dining.hasItem = false;
@@ -183,8 +191,8 @@
 				Loc8_large_hallway.id = 8;
 				Loc8_large_hallway.name = "large hallway";
 				Loc8_large_hallway.message = "You are in a large hallway now. You" + 
-											 "can see different pictures of previous" + 
-											 "owners of the mansion.";
+											 " can see different pictures of previous" + 
+											 " owners of the mansion.";
 				Loc8_large_hallway.hasVisited = false;
 				Loc8_large_hallway.item = itemBook.description;
 				Loc8_large_hallway.hasItem = true;
@@ -193,8 +201,8 @@
 				Loc9_library.id = 9;
 				Loc9_library.name = "library";
 				Loc9_library.message = "This is a library. It is huge with high ceilings" + 
-										"and large windows. There is an enormous amount" + 
-										"of books here.";
+										" and large windows. There is an enormous amount" + 
+										" of books here.";
 				Loc9_library.hasVisited = false;
 				Loc9_library.item = "";
 				Loc9_library.hasItem = false;
@@ -204,8 +212,8 @@
 				Loc10_stairs.id = 10;
 				Loc10_stairs.name = "stairs";
 				Loc10_stairs.message = "You reached stairs that lead to the second floor." + 
-									  "The door to enter that floor is closed, so you" + 
-									  "cannot get there now.";
+									  " The door to enter that floor is closed, so you" + 
+									  " cannot get there now.";
 				Loc10_stairs.hasVisited - false;
 				Loc10_stairs.item = "";
 				Loc10_stairs.hasItem = false;
