@@ -6,8 +6,6 @@
 			var EAST  = 2;
 			var WEST  = 3;	
             var puzzle = false;	
-				
-            			  
 			
 		    //global array for navigation 
 			           // 0   1   2   3
@@ -23,8 +21,7 @@
 				 /*8*/  [ 7, 10,  9,  5],
 				 /*9*/  [-1, -1, -1,  8],
 				/*10*/  [ 8, -1, -1,  4] 
-		              ];		 
-					  
+		              ];		 					  
 			var buttons = [ /*N   S   E   W*/ 
 					 /*0*/  [ 0,  0,  0,  0],  
 					 /*1*/  [ 1,  0,  0,  1], 
@@ -123,7 +120,8 @@
 				var Loc1_dark_room = new locale();
 				Loc1_dark_room.id = 1;
 				Loc1_dark_room.name = "dark room";
-				Loc1_dark_room.message = "You entered a dark room with no windows.";
+				Loc1_dark_room.message = "You entered a dark room with no windows. Press Use to" + 
+				                         " switch the flashlight on and see what's inside.";
 				Loc1_dark_room.hasVisited = false;
 				Loc1_dark_room.item = "";
 				Loc1_dark_room.hasItem = false;
@@ -288,7 +286,8 @@
 				presentMessage(locArray[curLoc].message);				
 				checkScore();
 				takeButtonVisibility();
-				buttonVisibility();				
+				buttonVisibility();	
+                puzzleMessages();				
 			}
 			
 			function btn_go_South() {
@@ -297,6 +296,7 @@
 				checkScore();
 				takeButtonVisibility();
 				buttonVisibility();
+				puzzleMessages();
 			}
 			
 			function btn_go_East() {
@@ -304,7 +304,8 @@
 				presentMessage(locArray[curLoc].message);
 				checkScore();
 				takeButtonVisibility();
-				buttonVisibility();				
+				buttonVisibility();
+                puzzleMessages();				
 			}
 			
 			function btn_go_West() {
@@ -312,7 +313,8 @@
 				presentMessage(locArray[curLoc].message);
 				checkScore();
 				takeButtonVisibility();
-				buttonVisibility();				
+				buttonVisibility();	
+                puzzleMessages();				
 			}
 			
             function nextLoc(dir) {
@@ -337,13 +339,7 @@
 				    }
 				}
 			}
-				
-			
-			
-			
-			
-			
-			
+		
 			//utility functions
             function txtCommand_keypress(e) {
 				 if (e.which === 13) {
@@ -375,8 +371,7 @@
 					            }
 			               }
 		            }
-					
-		  
+							  
 		    function unknownCommand() {
 		      presentMessage("I don't understand your command.");
 		   }
@@ -404,8 +399,26 @@
 			  }			
 			   checkScore();
 		       dspScore();
-            }	
-									
+            }
+			
+			function puzzleMessages() {
+				if (! items[4].isTaken && curLoc === -1) {
+				    presentMessage("You need a flashlight to proceed to the North.");
+                } else {
+				    if(curLoc === 3 && items[6].isTaken) {
+					   presentMessage("You can play the piano since you have the music sheet!");
+					} else {
+					    if (curLoc === 0 && ! items[4].isTaken) {
+						    presentMessage("You need to find a flashlight.");
+						} else {
+						    if (curLoc === 6 && ! items[4].isTaken) {
+						        presentMessage("You need to find a flashlight.");
+						    }
+				        }
+				    }
+				}
+			}
+                               				
 			function takeButtonVisibility() {
 			    if (curLoc === 3 && !items[3].isTaken) {
 				    document.getElementById("takeButton").disabled = false;
@@ -420,7 +433,7 @@
 						                  document.getElementById("takeButton").disabled = false;
 					                    } else { 
                                              document.getElementById("takeButton").disabled = true;
-                                            }		 
+                                            }											
 				       
 				                        }
 						        }
@@ -429,7 +442,10 @@
 			
 		// puzzle elements
         function btn_Play() {
-		    presentMessage("Wow, you are playing music! Do you hear the bird singing? It is somewhere close!");
+		    puzzle = true;
+		    presentMessage("Wow, you are playing music! Do you hear the bird singing? It is somewhere close!" + 
+			               " Hint: in order to complete the game, you have to play the piano in this room.");
+						   gameComplete();
 		}
 	  
 	    function btn_Play_Visibility() {		
@@ -440,42 +456,24 @@
 		    }
 		}
 		
-        
-		
         function buttonVisibility() {		
 		   btn_Use_Visibility();
 		   btn_Play_Visibility();
      	   for (var i=0;  i < buttonsDeclare.length; i++) {			    
 			    disable_Main_Buttons = buttons [curLoc] [i];
 			    if (disable_Main_Buttons === 1) {
-			        document.getElementById(buttonsDeclare[i]).disabled = true;
+			        document.getElementById(buttonsDeclare[i]).disabled = true;					
+			    } else {						       
+			        document.getElementById(buttonsDeclare[i]).disabled = false;
+                }
 					
-					      } else {						       
-			                  document.getElementById(buttonsDeclare[i]).disabled = false;
-                            }
-					
-                    }
-				}
-				
-					
-    /*    function changenavigation() {
-		var enableLoc1 = nav [curLoc][dir];
-            if (items[4].isTaken) {
-			nav [0][0] = 1;
-			
-			}
-        }		
-					
-			*/		
-					
+            }
+		}
 		
-		
-			
 		function btn_Use() {
             puzzle = true;		
 		    presentMessage("You are using the flashlight and now you can see an old" + 
-			               " closet in the room. You can also navigate from the room now.");
-			
+			               " closet in the room. You can also navigate from the room now.");			
 		}
 		
 		function btn_Use_Visibility() {		  
@@ -485,99 +483,101 @@
 		        document.getElementById("use").disabled = true;
 		    }
 		}
-        			
-  
-		
-		/*function gameComplete() {
-		    if
-		}
-   		*/
-		
+	
 		  // functions for keeping and showing score!
 		   function checkScore() {
 		     if (curLoc === 0 && ! locArray[0].hasVisited) {		           
 			     score = score + 5;
-				 locArray[0].hasVisited = true;
-				 
-		     }		     
+				 locArray[0].hasVisited = true;				 
+		     }
+		     
 		    if (curLoc === 1 && ! locArray[1].hasVisited) {						    			  
 			    score = score + 5;
-				locArray[1].hasVisited = true;
-				  
-			 }				 							 		
+				locArray[1].hasVisited = true;				  
+			 }
+			 
 			if (curLoc === 2 && ! locArray[2].hasVisited) {			    
 			    score = score + 5;
-				locArray[2].hasVisited = true;
-				  
-			 }				   			   
+				locArray[2].hasVisited = true;				  
+			 }
+			 
 			if (curLoc === 3 && ! locArray[3].hasVisited) {			  
 			    score = score + 5;
-				locArray[3].hasVisited = true;
-			       
-			 }				 
+				locArray[3].hasVisited = true;			       
+			 }
+			 
 			if (curLoc === 4 && ! locArray[4].hasVisited) {			    
 			    score = score + 5;
-				locArray[4].hasVisited = true;				 
-			     
-			 }				 
+				locArray[4].hasVisited = true;				 			     
+			 }
+			 
 			if (curLoc === 5 && ! locArray[5].hasVisited) {			    
 			    score = score + 5;
-				locArray[5].hasVisited = true;				 
-			     
-			 }				 
+				locArray[5].hasVisited = true;				 			     
+			 }
+			 
 			if (curLoc === 6 && ! locArray[6].hasVisited) {			 
 			    score = score + 5;
-				locArray[6].hasVisited = true;				 
-			     
-			 }				 
+				locArray[6].hasVisited = true;				 			     
+			 }
+			 
 			if (curLoc === 7 && ! locArray[7].hasVisited) {			  
 			    score = score + 5;
-				locArray[7].hasVisited = true;				 
-			     				 
-			 }			 
+				locArray[7].hasVisited = true;				 			     				 
+			 }
+			 
 			 if (curLoc === 8 && ! locArray[8].hasVisited) {			    
 			     score = score + 5;
-				 locArray[8].hasVisited = true;				 
-			     
-			 }			 
+				 locArray[8].hasVisited = true;				 			     
+			 }
+			 
 			 if (curLoc === 9 && ! locArray[9].hasVisited) {			    
 			     score = score + 5;
-				 locArray[9].hasVisited = true;				 
-			     
-			 }			 
+				 locArray[9].hasVisited = true;				 			     
+			 }
+			 
 			 if (curLoc === 10 && ! locArray[10].hasVisited) {			    
 			     score = score + 5;
-				 locArray[10].hasVisited = true;				 
-			     
+				 locArray[10].hasVisited = true;				 			     
 			 }
+			 
 			 if (curLoc === 3 && items[3].countScore) { 			 
                  score = score + 5;
-				 items[3].countScore = false;
-                 
+				 items[3].countScore = false;                
 			 }
+			 
 			 if (curLoc === 4 && items[4].countScore) {                
                  score = score + 5;
-				 items[4].countScore = false;
-                 
+				 items[4].countScore = false;                 
 			 }
+			 
 			 if (curLoc === 6 && items[6].countScore) {                 
                  score = score + 5;
-				 items[6].countScore = false;
-                 
+				 items[6].countScore = false;                
 			 }
+			 
 			 if (curLoc === 8 && items[8].countScore) {                
                  score = score + 5;
-				 items[8].countScore = false;
-                 
+				 items[8].countScore = false;                
 			 }
-          }				 
 			 
-		      			
+			 if (puzzle = true) {
+			     if (score <= 60) {
+			         score = score + 5;
+			         puzzle = false;
+			        }
+			    }
+          }				 
+			 		      			
 		function dspScore() {			         
 			     document.getElementById("scoreText").value = "Score:" + score;
 		}
 
-		
+		function gameComplete() {
+		    if (inventory.length === 4 && score >= 100 && curLoc === 3 && puzzle && locArray[curLoc].hasVisited )
+			presentMessage("Wow! You can see the canary bird! It's flying away! You have completed" + 
+			               " the assignment! Well done!");
+		}
 		
 		
 		
